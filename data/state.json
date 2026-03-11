@@ -1,0 +1,36 @@
+{
+  "last_check": "2026-03-11T22:56:51.346033+09:00",
+  "notified_bids": {
+    "R26BK01387264-000": {
+      "notified_at": "2026-03-11T22:41:03.213472+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    },
+    "R26BK01387419-000": {
+      "notified_at": "2026-03-11T22:41:03.213638+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    },
+    "R26BK01387798-000": {
+      "notified_at": "2026-03-11T22:41:03.213711+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    },
+    "R26BK01387815-000": {
+      "notified_at": "2026-03-11T22:41:03.213864+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    },
+    "R26BK01387804-000": {
+      "notified_at": "2026-03-11T22:41:03.214003+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    },
+    "R26BK01360921-000": {
+      "notified_at": "2026-03-11T22:56:49.259529+09:00",
+      "profile": "지적측량 용역",
+      "notice_type": "bid"
+    }
+  },
+  "notified_prebids": {}
+}

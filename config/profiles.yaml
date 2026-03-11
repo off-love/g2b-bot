@@ -1,0 +1,47 @@
+profiles:
+  - name: "지적측량 용역"
+    enabled: true
+
+    # 입찰 유형 (복수 선택 가능)
+    bid_types:
+      - service          # 용역
+
+    # 키워드 검색 조건
+    keywords:
+      # OR 조건: 각 키워드로 개별 API 호출 (bidNtceNm 파라미터)
+      or:
+        - "지적측량"
+        - "확정측량"
+        - "지적재조사"
+        - "측량"
+      # AND 조건: API 조회 후 코드 레벨에서 추가 필터링
+      and: []
+      # 제외 키워드: 코드 레벨에서 필터 아웃
+      exclude:
+        - "취소공고"
+        - "정정공고"
+
+    # 수요기관 필터
+    demand_agencies:
+      # 기관코드를 아는 경우 → API 레벨 필터 (dmndInsttCd)
+      by_code: []
+      # 기관명만 아는 경우 → 코드 레벨 필터 (dmndInsttNm 응답 매칭)
+      by_name: []
+
+    # 지역 필터 (코드 레벨: prtcptPsblRgnNm 응답 필드)
+    regions: []
+
+    # 금액 범위 (코드 레벨: presmptPrce 응답 필드, 단위: 원)
+    price_range:
+      min: 0             # 0이면 하한 제한 없음
+      max: 0             # 0이면 상한 제한 없음
+
+    # 사전규격공개 알림 포함 여부
+    include_prebid: true
+
+# 전역 설정
+settings:
+  check_interval_minutes: 30
+  query_buffer_hours: 1
+  max_results_per_page: 999
+  timezone: "Asia/Seoul"

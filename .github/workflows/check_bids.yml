@@ -1,0 +1,42 @@
+name: 나라장터 입찰공고 체크
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # 매 30분
+  workflow_dispatch:          # 수동 실행
+
+permissions:
+  contents: write             # state.json 커밋
+
+env:
+  G2B_API_KEY: ${{ secrets.G2B_API_KEY }}
+  G2B_PREBID_API_KEY: ${{ secrets.G2B_PREBID_API_KEY }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  TZ: Asia/Seoul
+
+jobs:
+  check-bids:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bid checker
+        run: python -m src.main
+
+      - name: Commit state changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --cached --quiet || git commit -m "chore: update state [skip ci]"
+          git push
