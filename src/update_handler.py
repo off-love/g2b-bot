@@ -97,6 +97,78 @@ def handle_remove_command(chat_id: str, args: list[str]) -> None:
         send_message(f"⚠️ '<b>{keyword}</b>' 키워드를 찾을 수 없습니다.", chat_id=chat_id)
 
 
+def handle_search_command(chat_id: str, args: list[str]) -> None:
+    """/search 명령어 처리: 즉각(일회성) 검색"""
+    profiles, _ = load_profiles()
+    if not profiles:
+        send_message("활성화된 프로필이 없습니다.", chat_id=chat_id)
+        return
+
+    if not args:
+        send_message("⚠️ 사용법이 올바르지 않습니다.\n예시: /search 지적재조사", chat_id=chat_id)
+        return
+
+    keyword = " ".join(args)
+    profile = profiles[0]
+
+    # 임시 프로필 생성 (키워드 덮어쓰기)
+    import copy
+    temp_profile = copy.deepcopy(profile)
+    temp_profile.keywords.or_keywords = [keyword]
+
+    send_message(f"🔎 '<b>{keyword}</b>' 키워드로 최근 24시간 내 공고를 검색 중입니다... (최대 1~2분 소요)", chat_id=chat_id)
+
+    bid_messages = []
+    prebid_messages = []
+
+    try:
+        from src.api.bid_client import fetch_bid_notices_multi_keywords
+        from src.api.prebid_client import fetch_prebid_notices
+        from src.core.filter import filter_bid_notices, filter_prebid_notices
+        from src.core.formatter import format_bid_notice, format_prebid_notice
+        from src.telegram_bot import send_bid_notifications
+
+        # 1. 입찰공고
+        for bid_type in temp_profile.bid_types:
+            dmnd_cd = temp_profile.demand_agencies.by_code[0] if temp_profile.demand_agencies.by_code else ""
+            raw_notices = fetch_bid_notices_multi_keywords(
+                bid_type=bid_type,
+                keywords=[keyword],
+                dmnd_instt_cd=dmnd_cd,
+                buffer_hours=24,
+                max_results=50,
+            )
+            filtered = filter_bid_notices(raw_notices, temp_profile)
+            for notice in filtered:
+                msg = format_bid_notice(notice, f"검색: {keyword}")
+                bid_messages.append({"text": msg})
+
+        # 2. 사전규격
+        if temp_profile.include_prebid:
+            for bid_type in temp_profile.bid_types:
+                raw_prebids = fetch_prebid_notices(
+                    bid_type=bid_type,
+                    buffer_hours=24,
+                    max_results=50,
+                )
+                filtered_prebids = filter_prebid_notices(raw_prebids, temp_profile)
+                for prebid in filtered_prebids:
+                    msg = format_prebid_notice(prebid, f"검색: {keyword}")
+                    prebid_messages.append({"text": msg})
+
+        all_messages = bid_messages + prebid_messages
+        if all_messages:
+            send_bid_notifications(all_messages)
+            summary_text = f"✅ <b>검색 완료</b>: 입찰공고 {len(bid_messages)}건, 사전규격 {len(prebid_messages)}건이 발견되었습니다."
+            send_message(summary_text, chat_id=chat_id)
+        else:
+            send_message(f"🤷‍♂️ '<b>{keyword}</b>' 관련하여 최근 24시간 내 올라온 신규 공고가 0건입니다.", chat_id=chat_id)
+
+    except Exception as e:
+        logger.error("검색 중 오류 발생: %s", e)
+        send_message(f"⚠️ 검색 중 지정된 조건에 맞는 결과를 가져오지 못했거나 오류가 발생했습니다. ({str(e)})", chat_id=chat_id)
+
+
 def process_updates() -> None:
     """밀린 텔레그램 업데이트를 수신하고 명령어를 처리합니다."""
     token = os.environ.get("TELEGRAM_BOT_TOKEN")
@@ -155,7 +227,8 @@ def process_updates() -> None:
                     "(입력 후 최대 30분 이내에 처리 완료 메시지가 도착합니다.)\n\n"
                     "🔍 /list - 현재 등록된 키워드 목록 보기\n"
                     "➕ /add [키워드] - 새 키워드 추가 (예: /add 공간정보)\n"
-                    "➖ /remove [키워드] - 키워드 삭제 (예: /remove 공간정보)", 
+                    "➖ /remove [키워드] - 키워드 삭제 (예: /remove 공간정보)\n"
+                    "🔎 /search [키워드] - (1회성) 지금 즉시 24시간 내 공고 검색", 
                     chat_id=chat_id
                 )
             elif command == "/list":
@@ -164,6 +237,8 @@ def process_updates() -> None:
                 handle_add_command(chat_id, args)
             elif command == "/remove":
                 handle_remove_command(chat_id, args)
+            elif command == "/search":
+                handle_search_command(chat_id, args)
             else:
                 send_message(f"알 수 없는 명령어입니다: {command}", chat_id=chat_id)
 
