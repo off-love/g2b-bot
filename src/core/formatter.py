@@ -20,7 +20,6 @@ def format_bid_notice(notice: BidNotice, profile_name: str) -> str:
         "━━━━━━━━━━━━━━━━━",
         "",
         f"📋 <b>{_escape_html(notice.bid_ntce_nm)}</b>",
-        f"🏷️ 프로필: {_escape_html(profile_name)}",
         f"📌 유형: {notice.bid_type.display_name}",
     ]
 
@@ -69,7 +68,6 @@ def format_prebid_notice(notice: PreBidNotice, profile_name: str) -> str:
         "━━━━━━━━━━━━━━━━━",
         "",
         f"📋 <b>{_escape_html(notice.prcure_nm)}</b>",
-        f"🏷️ 프로필: {_escape_html(profile_name)}",
         f"📌 유형: {notice.bid_type.display_name}",
         "",
         f"🏢 공고기관: {_escape_html(notice.ntce_instt_nm)}",
@@ -122,7 +120,6 @@ def format_summary(
     """실행 요약 메시지"""
     lines = [
         f"📊 <b>나라장터 조회 결과</b> ({_escape_html(check_time)})",
-        f"🏷️ 프로필: {_escape_html(profile_name)}",
     ]
 
     if bid_count > 0:
