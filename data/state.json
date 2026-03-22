@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-03-22T20:15:24.448677+09:00",
+  "last_check": "2026-03-22T20:24:29.015576+09:00",
   "notified_bids": {
     "R26BK01387264-000": {
       "notified_at": "2026-03-11T22:41:03.213472+09:00",
@@ -409,5 +409,5 @@
   },
   "notified_prebids": {},
   "telegram_offset": 180439641,
-  "telegram_offset_bid": 180439674
+  "telegram_offset_bid": 180439675
 }
