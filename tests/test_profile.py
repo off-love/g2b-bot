@@ -21,7 +21,7 @@ def test_load_default_profiles():
     assert BidType.SERVICE in profiles[0].bid_types
     assert "지적측량" in profiles[0].keywords.or_keywords
     assert "확정측량" in profiles[0].keywords.or_keywords
-    assert "지적재조사" in profiles[0].keywords.or_keywords
+    assert "측량" in profiles[0].keywords.or_keywords
     assert "취소공고" in profiles[0].keywords.exclude
 
     assert settings.check_interval_minutes == 30
