@@ -28,6 +28,12 @@ from src.storage.profile_manager import (
     load_profiles,
     remove_profile_keyword,
 )
+from src.storage.subscriber_manager import (
+    add_subscriber,
+    get_subscriber_count,
+    load_subscribers,
+    remove_subscriber,
+)
 from src.storage.state_manager import load_state, save_state
 from src.telegram_bot import send_message
 
@@ -79,18 +85,43 @@ def _require_super_admin(chat_id: str, mode: str) -> bool:
 # ──────────────────────────────────────────────
 
 def handle_admin_command(chat_id: str, args: list[str], mode: str) -> None:
-    """/admin 명령어 처리 — 슈퍼 관리자 전용
-
+    """/admin 명령어 처리
+    
     사용법:
-        /admin list               — 현재 관리자 목록 출력
-        /admin add <chat_id>      — 관리자 추가
-        /admin remove <chat_id>   — 관리자 제거
-        /admin help               — 도움말
+        /admin users            — 전체 사용자(구독자) 목록 보기 (관리자 이상)
+        /admin list             — 현재 관리자 목록 출력 (슈퍼 관리자)
+        /admin add <chat_id>    — 관리자 추가 (슈퍼 관리자)
+        /admin remove <chat_id> — 관리자 제거 (슈퍼 관리자)
     """
-    if not _require_super_admin(chat_id, mode):
+    sub = args[0].lower() if args else "help"
+
+    # 1. 'users' 명령어는 일반 관리자도 사용 가능
+    if sub == "users":
+        if not _require_admin(chat_id, mode):
+            return
+        
+        subs = sorted(list(load_subscribers()))
+        admins = sorted(list(get_all_admins()))
+        count = len(set(subs) | set(admins))
+        
+        lines = [f"👥 <b>전체 사용자 목록 (총 {count}명)</b>\n━━━━━━━━━━━━━━"]
+        lines.append("\n👑 <b>관리자 권한 사용자</b>")
+        for i, admin_id in enumerate(admins, 1):
+            label = " (슈퍼 관리자)" if is_super_admin(admin_id) else ""
+            lines.append(f"{i}. <code>{admin_id}</code>{label}")
+        
+        lines.append("\n👤 <b>일반 알림 구독자</b>")
+        if not subs:
+            lines.append("- (없음)")
+        for i, sub_id in enumerate(subs, 1):
+            lines.append(f"{i}. <code>{sub_id}</code>")
+            
+        send_message("\n".join(lines), chat_id=chat_id, mode=mode)
         return
 
-    sub = args[0].lower() if args else "help"
+    # 2. 그 외 명령어는 슈퍼 관리자만 가능
+    if not _require_super_admin(chat_id, mode):
+        return
 
     if sub == "list":
         admins = get_all_admins()
@@ -131,8 +162,11 @@ def handle_admin_command(chat_id: str, args: list[str], mode: str) -> None:
 
     else:
         send_message(
-            "👑 <b>/admin 명령어 도움말</b> (슈퍼 관리자 전용)\n"
+            "👑 <b>/admin 명령어 도움말</b>\n"
             "━━━━━━━━━━━━━━━━━━━━\n"
+            "/admin users — 전체 사용자(구독자) 목록 보기 (관리자+)\n"
+            "━━━━━━━━━━━━━━━━━━━━\n"
+            "⚠️ <b>아래는 슈퍼 관리자 전용입니다.</b>\n"
             "/admin list — 관리자 목록 보기\n"
             "/admin add &lt;chat_id&gt; — 관리자 추가\n"
             "/admin remove &lt;chat_id&gt; — 관리자 제거",
@@ -353,6 +387,10 @@ def process_updates(mode: str) -> None:
             text = message.get("text", "").strip()
             chat_id = str(message.get("chat", {}).get("id"))
             
+            # [추가] 메시지를 보낸 모든 사용자를 자동으로 구독자 목록에 추가
+            if chat_id:
+                add_subscriber(chat_id)
+            
             if not text or not text.startswith("/"):
                 continue
 
@@ -372,6 +410,7 @@ def process_updates(mode: str) -> None:
                     "📋 <b>사용 가능한 명령어</b>\n"
                     "━━━━━━━━━━━━━━━━━━\n"
                     "🔍 /list — 현재 등록된 키워드 목록 보기\n"
+                    "🚫 /stop — 알림 발송 중단 (구독 해지)\n"
                 )
                 if is_admin(chat_id):
                     base += (
@@ -402,6 +441,11 @@ def process_updates(mode: str) -> None:
                 handle_search_command(chat_id, args, mode)
             elif command == "/admin":
                 handle_admin_command(chat_id, args, mode)
+            elif command == "/stop":
+                if remove_subscriber(chat_id):
+                    send_message("📴 알림 구독이 해제되었습니다. 다시 알림을 받으시려면 언제든 메시지를 보내주세요.", chat_id=chat_id, mode=mode)
+                else:
+                    send_message("⚠️ 구독 정보를 찾을 수 없거나 이미 해지되었습니다.", chat_id=chat_id, mode=mode)
             else:
                 send_message(f"알 수 없는 명령어입니다: {command}", chat_id=chat_id, mode=mode)
 

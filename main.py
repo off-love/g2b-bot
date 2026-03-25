@@ -30,6 +30,8 @@ from src.storage.state_manager import (
     save_state,
     update_last_check,
 )
+from src.storage.admin_manager import get_all_admins
+from src.storage.subscriber_manager import load_subscribers
 from src.telegram_bot import send_bid_notifications, send_message
 from src.utils.time_utils import now_kst
 
@@ -121,12 +123,39 @@ def process_profile(profile: AlertProfile, state: dict, settings: dict, mode: st
             "알림 발송: 입찰 %d건, 사전규격 %d건",
             len(bid_messages), len(prebid_messages),
         )
-        sent = send_bid_notifications(all_messages, mode=mode)
-        logger.info("발송 완료: %d/%d건", sent, len(all_messages))
+        
+        # ── 전송 대상 수집 (관리자 + 구독자) ──
+        target_chat_ids: set[str] = set()
+        
+        # 1. 환경변수의 기본 Chat ID
+        try:
+            from src.telegram_bot import _get_chat_id
+            target_chat_ids.add(_get_chat_id(mode))
+        except Exception:
+            pass
+            
+        # 2. 관리자 목록
+        target_chat_ids.update(get_all_admins())
+        
+        # 3. 일반 구독자 목록
+        target_chat_ids.update(load_subscribers())
+        
+        logger.info("총 %d개의 채널로 알림을 전송합니다.", len(target_chat_ids))
+
+        # ── 각 사용자에게 전송 ──
+        total_sent = 0
+        for target_id in target_chat_ids:
+            try:
+                sent = send_bid_notifications(all_messages, mode=mode, chat_id=target_id)
+                total_sent += sent
+            except Exception as e:
+                logger.error("대상 %s 전송 중 오류: %s", target_id, e)
+
+        logger.info("발송 완료: 총 %d건 (대상 %d명)", total_sent, len(target_chat_ids))
     else:
         logger.info("신규 알림 없음")
 
-    # 요약 메시지 (알림이 있을 때만)
+    # 요약 메시지 (알림이 있을 때만 모든 대상에게 전송)
     if all_messages:
         summary = format_summary(
             profile_name=profile.name,
@@ -134,7 +163,8 @@ def process_profile(profile: AlertProfile, state: dict, settings: dict, mode: st
             prebid_count=len(prebid_messages),
             check_time=now_kst().strftime("%H:%M"),
         )
-        send_message(summary, mode=mode)
+        for target_id in target_chat_ids:
+            send_message(summary, chat_id=target_id, mode=mode)
 
     return len(bid_messages), len(prebid_messages)
 

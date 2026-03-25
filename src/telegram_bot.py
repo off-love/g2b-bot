@@ -146,13 +146,18 @@ def _split_text(text: str, max_length: int) -> list[str]:
     return chunks
 
 
-def send_bid_notifications(messages: list[dict[str, Any]] | list[str], mode: str = "bid") -> int:
+def send_bid_notifications(
+    messages: list[dict[str, Any]] | list[str],
+    mode: str = "bid",
+    chat_id: str | None = None,
+) -> int:
     """여러 알림 메시지를 순차 전송
 
     Args:
         messages: 포맷팅된 메시지(또는 딕셔너리) 목록
                   딕셔너리일 경우 {"text": "...", "reply_markup": {...}} 형식
         mode: 봇 실행 모드 (bid 또는 prebid)
+        chat_id: 수신 채팅 ID (None이면 환경변수 기본값 사용)
 
     Returns:
         성공적으로 전송한 메시지 수
@@ -162,9 +167,9 @@ def send_bid_notifications(messages: list[dict[str, Any]] | list[str], mode: str
         if isinstance(msg, dict):
             text = msg.get("text", "")
             reply_markup = msg.get("reply_markup")
-            is_success = send_message(text, reply_markup=reply_markup, mode=mode)
+            is_success = send_message(text, reply_markup=reply_markup, chat_id=chat_id, mode=mode)
         else:
-            is_success = send_message(msg, mode=mode)
+            is_success = send_message(msg, chat_id=chat_id, mode=mode)
             
         if is_success:
             success_count += 1
