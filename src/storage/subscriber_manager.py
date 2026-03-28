@@ -24,6 +24,7 @@ def _get_path(mode: str) -> Path:
 
 def load_subscribers(mode: str = "bid") -> set[str]:
     """모드별 subscribers_{mode}.json에서 구독자 Chat ID 목록을 로드합니다.
+    (기존 subscribers.json 파일이 있다면 모드 변경에 따라 자동 마이그레이션 합니다.)
 
     Args:
         mode: 실행 모드 (bid 또는 prebid)
@@ -32,7 +33,21 @@ def load_subscribers(mode: str = "bid") -> set[str]:
         구독자 Chat ID의 집합 (str). 파일이 없으면 빈 집합 반환.
     """
     path = _get_path(mode)
+    legacy_path = _DATA_DIR / "subscribers.json"
+
+    # 타겟 파일이 없으나 옛 버전 파일이 있다면 마이그레이션 시도
     if not path.exists():
+        if mode == "bid" and legacy_path.exists():
+            try:
+                with open(legacy_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                legacy_subs = set(str(item) for item in data.get("subscribers", []))
+                if legacy_subs:
+                    logger.info(f"💾 기존 subscribers.json에서 {path.name}으로 자동 마이그레이션을 진행합니다.")
+                    save_subscribers(legacy_subs, mode="bid")
+                    return legacy_subs
+            except Exception as e:
+                logger.error(f"⚠️ 기존 구독자 데이터 마이그레이션 실패: {e}")
         return set()
 
     try:
