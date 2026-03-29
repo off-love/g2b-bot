@@ -30,7 +30,7 @@ def test_search_command():
     print("\n[테스트: /search 용역]")
     
     # 텔레그램 발송 함수들을 모킹(Mocking)하여 실제 메시지는 안 나가게 함 (선택 사항)
-    # 여기서는 로그에 찍히는 fetch_bid_notices와 fetch_prebid_notices 호출 여부로 판단
+    # 여기서는 로그에 찍히는 fetch_bid_notices 호출 여부로 판단
     
     try:
         # chat_id는 임의의 값, args는 ['용역']

@@ -3,12 +3,11 @@
 
 GitHub Actions 대신 전용 서버(VPS 등)에서 24시간 구동할 때 사용합니다.
 - 텔레그램 명령어 수집: 10초마다 (실시간 응답 가능)
-- 입찰공고/사전규격 체크: 30분마다 (또는 설정된 주기)
+- 입찰공고 체크: 30분마다 (또는 설정된 주기)
 """
 
 import logging
 import time
-import os
 import sys
 from datetime import datetime, timedelta
 
@@ -26,7 +25,7 @@ logger = logging.getLogger("BotRunner")
 
 def bot_loop():
     logger.info("=" * 50)
-    logger.info("나라장터 상시 구동 봇 시작")
+    logger.info("나라장터 입찰공고 상시 구동 봇 시작")
     logger.info("=" * 50)
     
     _, settings = load_profiles()

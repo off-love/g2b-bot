@@ -86,7 +86,7 @@ def cleanup_old_records(state: dict, days: int = CLEANUP_DAYS) -> int:
     cutoff = datetime.now(KST) - timedelta(days=days)
     removed = 0
 
-    for section in ("notified_bids", "notified_prebids"):
+    for section in ("notified_bids",):
         records = state.get(section, {})
         keys_to_remove = []
 
