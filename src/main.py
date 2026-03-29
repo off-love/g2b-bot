@@ -2,25 +2,23 @@
 메인 실행 스크립트
 
 GitHub Actions cron 에 의해 30분마다 실행됩니다.
-프로필별로 입찰공고 + 사전규격을 조회하고, 필터링 후 텔레그램으로 알림을 보냅니다.
+프로필별로 입찰공고를 조회하고, 필터링 후 텔레그램으로 알림을 보냅니다.
 """
 
 from __future__ import annotations
 
-import argparse
 import logging
+import os
 import sys
 from typing import Any
 
 from src.api.bid_client import fetch_bid_notices
-from src.api.prebid_client import fetch_prebid_notices
-from src.core.filter import filter_bid_notices, filter_prebid_notices
+from src.core.filter import filter_bid_notices
 from src.core.formatter import (
     format_bid_notice,
-    format_prebid_notice,
     format_summary,
 )
-from src.core.models import AlertProfile, BidType
+from src.core.models import AlertProfile
 from src.storage.profile_manager import load_profiles
 from src.storage.state_manager import (
     cleanup_old_records,
@@ -30,7 +28,13 @@ from src.storage.state_manager import (
     save_state,
     update_last_check,
 )
-from src.telegram_bot import send_bid_notifications, send_message
+from src.storage.admin_manager import get_all_admins
+from src.storage.subscriber_manager import load_subscribers, remove_subscriber
+from src.telegram_bot import (
+    send_message,
+    broadcast_message,
+    broadcast_notifications,
+)
 from src.utils.time_utils import now_kst
 
 # 로깅 설정
@@ -42,22 +46,20 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def process_profile(profile: AlertProfile, state: dict, settings: dict, mode: str) -> tuple[int, int]:
+def process_profile(profile: AlertProfile, state: dict, settings: dict) -> int:
     """단일 프로필을 처리합니다.
 
     Args:
         profile: 알림 프로필
         state: 상태 데이터
         settings: 전역 설정
-        mode: 실행 모드 (bid 또는 prebid)
 
     Returns:
-        (입찰공고 알림 수, 사전규격 알림 수)
+        입찰공고 알림 수
     """
-    logger.info("━━━ 프로필 처리: %s (모드: %s) ━━━", profile.name, mode)
+    logger.info("━━━ 프로필 처리: %s ━━━", profile.name)
 
     bid_messages: list[Any] = []
-    prebid_messages: list[Any] = []
     buffer_hours = settings.get("query_buffer_hours", 1)
     max_results = settings.get("max_results_per_page", 999)
 
@@ -85,70 +87,53 @@ def process_profile(profile: AlertProfile, state: dict, settings: dict, mode: st
                     mark_notified(state, notice.unique_key, profile.name, "bid")
         return messages
 
-    def fetch_all_prebids():
-        messages = []
-        if not profile.include_prebid: return []
-        seen_keys = set()
-        for bid_type in profile.bid_types:
-            keywords = profile.keywords.or_keywords or [""]
-            for kw in keywords:
-                raw_prebids = fetch_prebid_notices(
-                    bid_type=bid_type,
-                    keyword=kw,
-                    buffer_hours=buffer_hours,
-                    max_results=max_results,
-                )
-                filtered = filter_prebid_notices(raw_prebids, profile)
-                for prebid in filtered:
-                    if prebid.unique_key in seen_keys: continue
-                    seen_keys.add(prebid.unique_key)
-                    if is_notified(state, prebid.unique_key, "prebid"): continue
-                    msg = format_prebid_notice(prebid, profile.name)
-                    messages.append({"text": msg})
-                    mark_notified(state, prebid.unique_key, profile.name, "prebid")
-        return messages
+    bid_messages = fetch_all_bids()
 
-    if mode == "bid":
-        bid_messages = fetch_all_bids()
-    elif mode == "prebid":
-        prebid_messages = fetch_all_prebids()
+    # ── 텔레그램 발송 ──
+    if bid_messages:
+        logger.info("알림 발송: 입찰 %d건", len(bid_messages))
 
-    # ── 3. 텔레그램 발송 ──
-    all_messages = bid_messages + prebid_messages
+        # 전송 대상 수집: 슈퍼관리자 + 일반관리자 + 구독자 (중복 제거)
+        super_admin = os.environ.get("SUPER_ADMIN_CHAT_ID", "")
+        admin_ids = get_all_admins()
+        subscribers = load_subscribers(mode="bid")
 
-    if all_messages:
-        logger.info(
-            "알림 발송: 입찰 %d건, 사전규격 %d건",
-            len(bid_messages), len(prebid_messages),
-        )
-        sent = send_bid_notifications(all_messages, mode=mode)
-        logger.info("발송 완료: %d/%d건", sent, len(all_messages))
-    else:
-        logger.info("신규 알림 없음")
+        target_chat_ids = set()
+        if super_admin:
+            target_chat_ids.add(str(super_admin))
+        for aid in admin_ids:
+            target_chat_ids.add(str(aid))
+        for sub_id in subscribers:
+            target_chat_ids.add(str(sub_id))
 
-    # 요약 메시지 (알림이 있을 때만)
-    if all_messages:
+        invalid_ids = broadcast_notifications(bid_messages, target_chat_ids=target_chat_ids, mode="bid")
+
+        for inv_id in invalid_ids:
+            if inv_id in subscribers:
+                remove_subscriber(inv_id, mode="bid")
+                logger.info("차단/탈퇴한 구독자 자동 삭제 완료: %s", inv_id)
+
+        logger.info("발송 완료: 총 %d명 대상 (유효하지 않은 사용자 %d명 제외)", len(target_chat_ids), len(invalid_ids))
+
+        # 요약 메시지
         summary = format_summary(
             profile_name=profile.name,
             bid_count=len(bid_messages),
-            prebid_count=len(prebid_messages),
             check_time=now_kst().strftime("%H:%M"),
         )
-        send_message(summary, mode=mode)
+        filtered_targets = target_chat_ids - set(invalid_ids)
+        if filtered_targets:
+            broadcast_message(summary, target_chat_ids=filtered_targets, mode="bid")
+    else:
+        logger.info("신규 알림 없음")
 
-    return len(bid_messages), len(prebid_messages)
+    return len(bid_messages)
 
 
 def main() -> None:
     """메인 실행"""
-    parser = argparse.ArgumentParser(description="나라장터 알림 봇 스크립트")
-    parser.add_argument("--mode", type=str, choices=["bid", "prebid"], default="bid", help="스크립트 실행 모드 (bid 또는 prebid)")
-    args = parser.parse_args()
-    
-    mode = args.mode
-    
     logger.info("=" * 50)
-    logger.info("나라장터 알림 서비스 시작 (모드: %s)", mode.upper())
+    logger.info("나라장터 입찰공고 알림 서비스 시작")
     logger.info("=" * 50)
 
     try:
@@ -172,51 +157,33 @@ def main() -> None:
         cleanup_old_records(state)
 
         total_bids = 0
-        total_prebids = 0
 
         # 프로필별 처리
         for profile in profiles:
             try:
-                bid_count, prebid_count = process_profile(profile, state, settings, mode)
+                bid_count = process_profile(profile, state, settings)
                 total_bids += bid_count
-                total_prebids += prebid_count
             except Exception as e:
                 logger.error("프로필 '%s' 처리 오류: %s", profile.name, e, exc_info=True)
-                # 오류 알림
                 try:
-                    success = send_message(
-                        f"⚠️ 프로필 '{profile.name}' 처리 중 오류 발생 (모드: {mode}): {e}", mode=mode
+                    send_message(
+                        f"⚠️ 프로필 '{profile.name}' 처리 중 오류 발생: {e}", mode="bid"
                     )
-                    # 사전규격 봇으로 전송 실패 시 입찰 봇으로 폴백 알림 (chat_id 누락 등)
-                    if not success and mode == "prebid":
-                        send_message(
-                            f"🚨 [사전규격 봇 오류] 사전규격 알림 처리에 실패했습니다. 봇 토큰이나 환경변수(Chat ID)를 확인해주세요: {e}", mode="bid"
-                        )
                 except Exception:
-                    # send_message 내에서 에러 발생 시 (ValueError 등)
-                    if mode == "prebid":
-                        try:
-                            send_message(
-                                f"🚨 [사전규격 봇 오류] 사전규격 봇 설정에 문제가 있습니다 (토큰/채팅ID 누락 등). 설정(Secrets)을 다시 확인해주세요! ({e})", mode="bid"
-                            )
-                        except Exception:
-                            pass
+                    pass
 
         # 상태 저장
         update_last_check(state)
         save_state(state)
 
         logger.info("=" * 50)
-        logger.info(
-            "전체 완료: 입찰공고 %d건, 사전규격 %d건 알림",
-            total_bids, total_prebids,
-        )
+        logger.info("전체 완료: 입찰공고 %d건 알림", total_bids)
         logger.info("=" * 50)
 
     except Exception as e:
         logger.critical("치명적 오류: %s", e, exc_info=True)
         try:
-            send_message(f"🚨 나라장터 알림 서비스 오류 (모드: {mode}): {e}", mode=mode)
+            send_message(f"🚨 나라장터 알림 서비스 오류: {e}", mode="bid")
         except Exception:
             pass
         sys.exit(1)

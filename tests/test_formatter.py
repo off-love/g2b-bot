@@ -2,8 +2,8 @@
 포맷터 유닛 테스트
 """
 
-from src.core.formatter import format_bid_notice, format_prebid_notice, format_summary
-from src.core.models import BidNotice, BidType, PreBidNotice
+from src.core.formatter import format_bid_notice, format_summary
+from src.core.models import BidNotice, BidType
 
 
 def test_bid_notice_format():
@@ -33,35 +33,16 @@ def test_bid_notice_format():
     assert "상세보기" in result
 
 
-def test_prebid_format():
-    """사전규격 알림 메시지 포맷 테스트"""
-    notice = PreBidNotice(
-        prcure_no="PS001",
-        prcure_nm="지적측량 사전규격",
-        ntce_instt_nm="한국국토정보공사",
-        rcpt_dt="2026/03/11 00:00:00",
-        opnn_reg_clse_dt="2026/03/18 00:00:00",
-        dtl_url="https://example.com",
-        bid_type=BidType.SERVICE,
-    )
-    result = format_prebid_notice(notice, "지적측량 용역")
-
-    assert "사전규격" in result
-    assert "지적측량 사전규격" in result
-    assert "한국국토정보공사" in result
-
-
 def test_summary_format():
     """요약 메시지 포맷 테스트"""
-    result = format_summary("지적측량 용역", 3, 1, "14:30")
+    result = format_summary("지적측량 용역", 3, "14:30")
     assert "3건" in result
-    assert "1건" in result
     assert "지적측량 용역" in result
 
 
 def test_summary_no_results():
     """결과 없을 때 요약"""
-    result = format_summary("테스트", 0, 0, "14:30")
+    result = format_summary("테스트", 0, "14:30")
     assert "신규 공고 없음" in result
     assert "테스트" in result
 

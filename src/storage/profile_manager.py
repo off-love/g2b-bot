@@ -103,7 +103,6 @@ def _parse_profile(data: dict[str, Any]) -> AlertProfile:
         demand_agencies=_parse_demand_agencies(data.get("demand_agencies")),
         regions=[str(r) for r in data.get("regions", [])],
         price_range=_parse_price_range(data.get("price_range")),
-        include_prebid=data.get("include_prebid", True),
     )
 
 

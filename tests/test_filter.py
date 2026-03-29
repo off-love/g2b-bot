@@ -4,14 +4,13 @@
 
 import pytest
 
-from src.core.filter import filter_bid_notices, filter_prebid_notices
+from src.core.filter import filter_bid_notices
 from src.core.models import (
     AlertProfile,
     BidNotice,
     BidType,
     DemandAgencyConfig,
     KeywordConfig,
-    PreBidNotice,
     PriceRange,
 )
 
@@ -234,27 +233,3 @@ class TestCombinedFilter:
         assert len(result) == 1
         assert result[0].bid_ntce_nm == "지적측량 위탁"
 
-
-class TestPreBidFilter:
-    """사전규격 필터링 테스트"""
-
-    def test_prebid_keyword_filter(self):
-        """사전규격 키워드 OR 필터"""
-        profile = _make_profile(
-            keywords=KeywordConfig(or_keywords=["지적측량", "확정측량"])
-        )
-        prebids = [
-            PreBidNotice(
-                prcure_no="P001", prcure_nm="지적측량 사전규격",
-                ntce_instt_nm="기관", rcpt_dt="2026-03-11",
-                opnn_reg_clse_dt="2026-03-18", dtl_url="", bid_type=BidType.SERVICE,
-            ),
-            PreBidNotice(
-                prcure_no="P002", prcure_nm="건설공사 사전규격",
-                ntce_instt_nm="기관", rcpt_dt="2026-03-11",
-                opnn_reg_clse_dt="2026-03-18", dtl_url="", bid_type=BidType.SERVICE,
-            ),
-        ]
-        result = filter_prebid_notices(prebids, profile)
-        assert len(result) == 1
-        assert "지적측량" in result[0].prcure_nm

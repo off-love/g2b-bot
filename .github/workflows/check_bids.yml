@@ -8,9 +8,12 @@ on:
 permissions:
   contents: write             # state.json 커밋
 
+concurrency:
+  group: bid-check
+  cancel-in-progress: false   # 진행 중인 작업은 완료 대기
+
 env:
   G2B_API_KEY: ${{ secrets.G2B_API_KEY }}
-  G2B_PREBID_API_KEY: ${{ secrets.G2B_PREBID_API_KEY }}
   TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
   TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
   SUPER_ADMIN_CHAT_ID: ${{ secrets.SUPER_ADMIN_CHAT_ID }}
@@ -43,4 +46,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/ config/
           git diff --cached --quiet || git commit -m "chore: update state and profiles [skip ci]"
-          git push
+          git pull --rebase origin main || git rebase --abort
+          git push || echo "Push failed, will retry next run"

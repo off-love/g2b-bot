@@ -21,7 +21,6 @@ from telegram.ext import (
 
 from src.storage.bookmark_manager import (
     add_bookmark_from_bid,
-    add_bookmark_from_prebid,
     clear_expired_bookmarks,
     get_user_bookmarks,
     load_bookmarks,
@@ -75,7 +74,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     data = query.data
     logger.info("콜백 데이터 수신: %s", data)
 
-    # data 형식: bm_bid_{unique_key} 또는 bm_prebid_{unique_key}
+    # data 형식: bm_bid_{unique_key}
     if data.startswith("bm_"):
         parts = data.split("_", 2)
         if len(parts) == 3:

@@ -27,7 +27,7 @@ def load_subscribers(mode: str = "bid") -> set[str]:
     (기존 subscribers.json 파일이 있다면 모드 변경에 따라 자동 마이그레이션 합니다.)
 
     Args:
-        mode: 실행 모드 (bid 또는 prebid)
+        mode: 실행 모드
 
     Returns:
         구독자 Chat ID의 집합 (str). 파일이 없으면 빈 집합 반환.
@@ -64,7 +64,7 @@ def save_subscribers(subscribers: set[str], mode: str = "bid") -> None:
 
     Args:
         subscribers: 저장할 구독자 Chat ID 집합
-        mode: 실행 모드 (bid 또는 prebid)
+        mode: 실행 모드
     """
     path = _get_path(mode)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -80,7 +80,7 @@ def add_subscriber(chat_id: str, mode: str = "bid") -> bool:
 
     Args:
         chat_id: 추가할 텔레그램 Chat ID
-        mode: 실행 모드 (bid 또는 prebid)
+        mode: 실행 모드
 
     Returns:
         추가 성공(새로 추가됨) 시 True, 이미 존재하면 False
@@ -102,7 +102,7 @@ def remove_subscriber(chat_id: str, mode: str = "bid") -> bool:
 
     Args:
         chat_id: 제거할 텔레그램 Chat ID
-        mode: 실행 모드 (bid 또는 prebid)
+        mode: 실행 모드
 
     Returns:
         제거 성공 시 True, 존재하지 않으면 False

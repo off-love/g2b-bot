@@ -1,12 +1,12 @@
 """
 메시지 포맷터
 
-텔레그램 알림 메시지를 Markdown 형식으로 구성합니다.
+텔레그램 알림 메시지를 HTML 형식으로 구성합니다.
 """
 
 from __future__ import annotations
 
-from src.core.models import BidNotice, PreBidNotice
+from src.core.models import BidNotice
 from src.utils.time_utils import calc_d_day, format_display_dt
 
 
@@ -65,33 +65,6 @@ def format_bid_notice(notice: BidNotice, profile_name: str, matched_keyword: str
     return "\n".join(lines)
 
 
-def format_prebid_notice(notice: PreBidNotice, profile_name: str, matched_keyword: str = "") -> str:
-    """사전규격공개 알림 메시지 포맷팅"""
-    prcure_nm = _escape_html(notice.prcure_nm)
-    if matched_keyword:
-        prcure_nm = _highlight_keyword(prcure_nm, matched_keyword)
-
-    lines = [
-        "📢 <b>[사전규격] 신규 공개</b>",
-        "━━━━━━━━━━━━━━━━━",
-        "",
-        f"📋 <b>{prcure_nm}</b>",
-        f"📌 유형: {notice.bid_type.display_name}",
-        "",
-        f"🏢 공고기관: {_escape_html(notice.ntce_instt_nm)}",
-        f"📅 공개일: {format_display_dt(notice.rcpt_dt)}",
-        f"📝 의견등록마감: {format_display_dt(notice.opnn_reg_clse_dt)}",
-        "",
-        "⚠️ 사전규격 단계입니다. 추후 입찰공고가 게시됩니다.",
-    ]
-
-    if notice.dtl_url:
-        lines.append("")
-        lines.append(f'🔗 <a href="{notice.dtl_url}">상세보기</a>')
-
-    return "\n".join(lines)
-
-
 def _highlight_keyword(text: str, keyword: str) -> str:
     """텍스트 내의 키워드에 볼드+코드 태그를 입혀 시각적 강조(음영) 효과를 줍니다."""
     if not keyword:
@@ -137,7 +110,6 @@ def format_share_message(notice: BidNotice) -> str:
 def format_summary(
     profile_name: str,
     bid_count: int,
-    prebid_count: int,
     check_time: str,
 ) -> str:
     """실행 요약 메시지"""
@@ -147,10 +119,7 @@ def format_summary(
 
     if bid_count > 0:
         lines.append(f"• 신규 입찰공고: <b>{bid_count}건</b>")
-    if prebid_count > 0:
-        lines.append(f"• 신규 사전규격: <b>{prebid_count}건</b>")
-
-    if bid_count == 0 and prebid_count == 0:
+    else:
         lines.append("• 신규 공고 없음")
 
     return "\n".join(lines)

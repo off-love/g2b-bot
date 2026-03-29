@@ -28,7 +28,6 @@ profiles:
   price_range:
     min: 0
     max: 0
-  include_prebid: true
 settings:
   check_interval_minutes: 30
   query_buffer_hours: 1

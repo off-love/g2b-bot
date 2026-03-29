@@ -13,7 +13,6 @@ from typing import Sequence
 from src.core.models import (
     AlertProfile,
     BidNotice,
-    PreBidNotice,
 )
 
 logger = logging.getLogger(__name__)
@@ -122,51 +121,6 @@ def filter_bid_notices(
 
     logger.info(
         "필터링 결과: %d건 → %d건 (프로필: %s)",
-        len(notices), len(result), profile.name,
-    )
-    return result
-
-
-def filter_prebid_notices(
-    notices: Sequence[PreBidNotice],
-    profile: AlertProfile,
-) -> list[PreBidNotice]:
-    """사전규격 공개 목록에 키워드 필터링을 적용합니다.
-
-    Args:
-        notices: 사전규격 목록
-        profile: 알림 프로필
-
-    Returns:
-        필터 통과한 PreBidNotice 리스트
-    """
-    result: list[PreBidNotice] = []
-    or_keywords = profile.keywords.or_keywords
-
-    for notice in notices:
-        name = notice.prcure_nm
-
-        # 1. 제외 키워드 체크
-        if _match_exclude_keywords(name, profile.keywords.exclude):
-            logger.debug("사전규격 제외됨 (키워드): %s", name)
-            continue
-
-        # 2. OR 키워드 매칭 (방어 로직)
-        if or_keywords:
-            name_lower = name.lower()
-            if not any(kw.lower() in name_lower for kw in or_keywords):
-                logger.debug("사전규격 제외됨 (OR): %s", name)
-                continue
-
-        # 3. AND 키워드 체크
-        if not _match_and_keywords(name, profile.keywords.and_keywords):
-            logger.debug("사전규격 제외됨 (AND): %s", name)
-            continue
-
-        result.append(notice)
-
-    logger.info(
-        "사전규격 필터링 결과: %d건 → %d건 (프로필: %s)",
         len(notices), len(result), profile.name,
     )
     return result

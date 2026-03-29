@@ -30,7 +30,6 @@ def _ensure_file(path: Path) -> None:
             json.dump({
                 "last_check": "",
                 "notified_bids": {},
-                "notified_prebids": {},
             }, f, ensure_ascii=False, indent=2)
 
 
@@ -54,8 +53,7 @@ def save_state(state: dict, path: Path | None = None) -> None:
 
 def is_notified(state: dict, unique_key: str, notice_type: str = "bid") -> bool:
     """이미 알림을 보낸 공고인지 확인"""
-    section = "notified_bids" if notice_type == "bid" else "notified_prebids"
-    return unique_key in state.get(section, {})
+    return unique_key in state.get("notified_bids", {})
 
 
 def mark_notified(
@@ -65,10 +63,9 @@ def mark_notified(
     notice_type: str = "bid",
 ) -> None:
     """알림 발송 기록 추가"""
-    section = "notified_bids" if notice_type == "bid" else "notified_prebids"
-    if section not in state:
-        state[section] = {}
-    state[section][unique_key] = {
+    if "notified_bids" not in state:
+        state["notified_bids"] = {}
+    state["notified_bids"][unique_key] = {
         "notified_at": now_iso(),
         "profile": profile_name,
         "notice_type": notice_type,

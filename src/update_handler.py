@@ -266,9 +266,8 @@ def handle_search_command(chat_id: str, args: list[str], mode: str) -> None:
 
     from concurrent.futures import ThreadPoolExecutor
     from src.api.bid_client import fetch_bid_notices
-    from src.api.prebid_client import fetch_prebid_notices
-    from src.core.filter import filter_bid_notices, filter_prebid_notices
-    from src.core.formatter import format_bid_notice, format_prebid_notice
+    from src.core.filter import filter_bid_notices
+    from src.core.formatter import format_bid_notice
     from src.telegram_bot import send_bid_notifications
 
     def fetch_bids_parallel():
@@ -291,39 +290,12 @@ def handle_search_command(chat_id: str, args: list[str], mode: str) -> None:
                     bids.append({"text": msg})
         return bids
 
-    def fetch_prebids_parallel():
-        prebids = []
-        if not temp_profile.include_prebid:
-            return []
-        seen_prebid_keys = set()
-        for bid_type in temp_profile.bid_types:
-            raw_prebids = fetch_prebid_notices(
-                bid_type=bid_type,
-                keyword=keyword,
-                buffer_hours=24,
-                max_results=50,
-            )
-            filtered_prebids = filter_prebid_notices(raw_prebids, temp_profile)
-            for prebid in filtered_prebids:
-                if prebid.unique_key not in seen_prebid_keys:
-                    seen_prebid_keys.add(prebid.unique_key)
-                    msg = format_prebid_notice(prebid, f"검색: {keyword}")
-                    prebids.append({"text": msg})
-        return prebids
-
     try:
-        bid_messages = []
-        prebid_messages = []
-        if mode == "bid":
-            bid_messages = fetch_bids_parallel()
-        elif mode == "prebid":
-            prebid_messages = fetch_prebids_parallel()
+        bid_messages = fetch_bids_parallel()
 
-        all_messages = bid_messages + prebid_messages
-        if all_messages:
-            send_bid_notifications(all_messages, mode=mode)
-            type_name = "입찰공고" if mode == "bid" else "사전규격"
-            summary_text = f"✅ <b>검색 완료</b>: {type_name} {len(all_messages)}건이 발견되었습니다."
+        if bid_messages:
+            send_bid_notifications(bid_messages, mode=mode)
+            summary_text = f"✅ <b>검색 완료</b>: 입찰공고 {len(bid_messages)}건이 발견되었습니다."
             send_message(summary_text, chat_id=chat_id, mode=mode)
         else:
             send_message(f"🤷‍♂️ '<b>{keyword}</b>' 관련하여 최근 24시간 내 올라온 신규 공고가 0건입니다.", chat_id=chat_id, mode=mode)
@@ -333,17 +305,11 @@ def handle_search_command(chat_id: str, args: list[str], mode: str) -> None:
         send_message(f"⚠️ 검색 중 지정된 조건에 맞는 결과를 가져오지 못했거나 오류가 발생했습니다. ({str(e)})", chat_id=chat_id, mode=mode)
 
 
-def process_updates(mode: str) -> None:
+def process_updates(mode: str = "bid") -> None:
     """밀린 텔레그램 업데이트를 수신하고 명령어를 처리합니다."""
-    env_var = "PREBID_TELEGRAM_BOT_TOKEN" if mode == "prebid" else "TELEGRAM_BOT_TOKEN"
-    token = os.environ.get(env_var)
+    token = os.environ.get("TELEGRAM_BOT_TOKEN")
     if not token:
-        logger.error("%s 환경변수가 없습니다.", env_var)
-        if mode == "prebid":
-            try:
-                send_message(f"🚨 [사전규격 봇 설정 오류]\nGitHub Secrets에 <b>{env_var}</b> 가 설정되지 않았습니다.\n토큰을 확인해 주세요!", mode="bid")
-            except Exception:
-                pass
+        logger.error("TELEGRAM_BOT_TOKEN 환경변수가 없습니다.")
         return
 
     state = load_state()
@@ -359,11 +325,6 @@ def process_updates(mode: str) -> None:
         
         if not data.get("ok"):
             logger.error("업데이트 조회 실패: %s", data.get("description"))
-            if mode == "prebid":
-                try:
-                    send_message(f"🚨 [사전규격 봇 연결 오류]\n텔레그램 업데이트 조회 실패:\n<code>{data.get('description')}</code>\n토큰이 잘못되었거나 봇이 삭제되었을 수 있습니다.", mode="bid")
-                except Exception:
-                    pass
             return
 
         updates = data.get("result", [])
@@ -403,10 +364,8 @@ def process_updates(mode: str) -> None:
             logger.info("명령어 수신: %s (args: %s, chat_id: %s)", command, args, chat_id)
 
             if command in ("/start", "/help"):
-                type_name = "사전규격" if mode == "prebid" else "입찰공고"
-                
                 base = (
-                    f"안녕하세요! 나라장터 {type_name} 알림 조수입니다. 🤖\n\n"
+                    "안녕하세요! 나라장터 입찰공고 알림 조수입니다. 🤖\n\n"
                     "📋 <b>사용 가능한 명령어</b>\n"
                     "━━━━━━━━━━━━━━━━━━\n"
                     "🔍 /list — 현재 등록된 키워드 목록 보기\n"
@@ -460,13 +419,7 @@ def process_updates(mode: str) -> None:
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="텔레그램 명령어 수집")
-    parser.add_argument("--mode", type=str, choices=["bid", "prebid"], default="bid", help="스크립트 실행 모드 (bid 또는 prebid)")
-    args = parser.parse_args()
-    
-    mode = args.mode
-
     logger.info("=" * 50)
-    logger.info("텔레그램 명령어 수집(GetUpdates) 시작 (모드: %s)", mode.upper())
+    logger.info("텔레그램 명령어 수집(GetUpdates) 시작")
     logger.info("=" * 50)
-    process_updates(mode)
+    process_updates(mode="bid")

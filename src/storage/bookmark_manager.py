@@ -10,7 +10,7 @@ import json
 import logging
 from pathlib import Path
 
-from src.core.models import BidNotice, BookmarkItem, PreBidNotice
+from src.core.models import BidNotice, BookmarkItem
 from src.utils.time_utils import now_iso
 
 logger = logging.getLogger(__name__)
@@ -105,34 +105,6 @@ def add_bookmark_from_bid(notice: BidNotice, profile_name: str) -> BookmarkItem:
     logger.info("북마크 추가: %s", notice.bid_ntce_nm)
     return bookmark
 
-
-def add_bookmark_from_prebid(notice: PreBidNotice, profile_name: str) -> BookmarkItem:
-    """사전규격공개를 북마크에 추가"""
-    items = load_bookmarks()
-
-    # 중복 체크
-    for item in items:
-        if item.bid_no == notice.unique_key:
-            logger.info("이미 북마크에 존재: %s", notice.unique_key)
-            return item
-
-    bookmark = BookmarkItem(
-        bid_no=notice.unique_key,
-        name=notice.prcure_nm,
-        org=notice.ntce_instt_nm,
-        demand_org="",
-        price=0,
-        close_date=notice.opnn_reg_clse_dt,
-        url=notice.dtl_url,
-        saved_at=now_iso(),
-        profile=profile_name,
-        notice_type="prebid",
-    )
-
-    items.append(bookmark)
-    save_bookmarks(items)
-    logger.info("사전규격 북마크 추가: %s", notice.prcure_nm)
-    return bookmark
 
 
 def remove_bookmark(bid_no: str) -> bool:

@@ -34,12 +34,12 @@ def test_search_command():
     
     try:
         # chat_id는 임의의 값, args는 ['용역']
-        handle_search_command("test_chat_id", ["용역"])
+        handle_search_command("test_chat_id", ["용역"], mode="bid")
         
         print("\n✅ 분석 결과:")
-        print("- 입찰공고(fetch_bid_notices)와 사전규격공고(fetch_prebid_notices)를 모두 호출하는 것을 확인했습니다.")
+        print("- 입찰공고(fetch_bid_notices)를 호출하여 검색하는 것을 확인했습니다.")
         print("- 조회 범위는 최근 24시간입니다.")
-        print("- 첫 번째 프로필의 'bid_types'와 'include_prebid' 설정을 기반으로 조회합니다.")
+        print("- 첫 번째 프로필의 'bid_types' 설정을 기반으로 조회합니다.")
 
     except Exception as e:
         print(f"❌ 테스트 중 오류 발생: {e}")

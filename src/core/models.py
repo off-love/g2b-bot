@@ -1,7 +1,7 @@
 """
 나라장터 입찰공고 알림 서비스 - 데이터 모델
 
-입찰공고, 사전규격, 알림 프로필 등 핵심 데이터 구조를 정의합니다.
+입찰공고, 알림 프로필 등 핵심 데이터 구조를 정의합니다.
 """
 
 from __future__ import annotations
@@ -45,7 +45,6 @@ class BidType(str, Enum):
 class NoticeType(str, Enum):
     """공고 종류"""
     BID = "bid"          # 입찰공고
-    PREBID = "prebid"    # 사전규격공개
 
 
 @dataclass
@@ -86,21 +85,6 @@ class BidNotice:
         return f"{self.presmpt_prce:,}원"
 
 
-@dataclass
-class PreBidNotice:
-    """사전규격공개 정보"""
-    prcure_no: str                # 사전규격등록번호
-    prcure_nm: str                # 사전규격명
-    ntce_instt_nm: str            # 공고기관명
-    rcpt_dt: str                  # 공개일
-    opnn_reg_clse_dt: str         # 의견등록마감일
-    dtl_url: str                  # 상세 URL
-    bid_type: BidType             # 입찰 유형
-
-    @property
-    def unique_key(self) -> str:
-        """중복 판별용 고유 키"""
-        return f"prebid-{self.prcure_no}"
 
 
 @dataclass
@@ -146,7 +130,7 @@ class AlertProfile:
     demand_agencies: DemandAgencyConfig = field(default_factory=DemandAgencyConfig)
     regions: list[str] = field(default_factory=list)
     price_range: PriceRange = field(default_factory=PriceRange)
-    include_prebid: bool = True
+
 
 
 @dataclass
@@ -161,7 +145,7 @@ class GlobalSettings:
 @dataclass
 class BookmarkItem:
     """북마크 항목"""
-    bid_no: str                   # 공고번호-차수 또는 사전규격번호
+    bid_no: str                   # 공고번호-차수
     name: str                     # 공고명
     org: str                      # 공고기관명
     demand_org: str               # 수요기관명
@@ -170,7 +154,7 @@ class BookmarkItem:
     url: str                      # 상세 URL
     saved_at: str                 # 저장 시각
     profile: str                  # 매칭된 프로필명
-    notice_type: str = "bid"      # bid 또는 prebid
+    notice_type: str = "bid"      # 공고 종류
     notes: str = ""               # 사용자 메모
 
 
@@ -179,4 +163,4 @@ class NotifiedRecord:
     """알림 이력 기록"""
     notified_at: str              # 알림 발송 시각
     profile: str                  # 프로필명
-    notice_type: str = "bid"      # bid 또는 prebid
+    notice_type: str = "bid"      # 공고 종류
