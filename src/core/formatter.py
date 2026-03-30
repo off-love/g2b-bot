@@ -23,7 +23,7 @@ def format_bid_notice(notice: BidNotice, profile_name: str, matched_keyword: str
         "🔔 <b>나라장터 신규 입찰공고</b>",
         "━━━━━━━━━━━━━━━━━",
         "",
-        f"📋 <b>{bid_name}</b>",
+        f"📋 {bid_name}",
         f"📌 유형: {notice.bid_type.display_name}",
     ]
 
@@ -77,7 +77,7 @@ def _highlight_keyword(text: str, keyword: str) -> str:
     
     # 정규표현식으로 교체 (대소문자 보존하며 태그 감싸기)
     pattern = re.compile(re.escape(escaped_kw), re.IGNORECASE)
-    return pattern.sub(lambda m: f"<code><b>{m.group(0)}</b></code>", text)
+    return pattern.sub(lambda m: f"<b>{m.group(0)}</b>", text)
 
 
 def format_share_message(notice: BidNotice) -> str:
