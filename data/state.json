@@ -1,5 +1,21 @@
 {
-  "last_check": "",
+  "last_check": "2026-04-19T15:24:28.493623+09:00",
   "notified_bids": {},
-  "notified_prebids": {}
+  "notified_prebids": {
+    "R26BD00215982": {
+      "notified_at": "2026-04-19T15:20:33.643553+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00215983": {
+      "notified_at": "2026-04-19T15:20:33.826895+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00215980": {
+      "notified_at": "2026-04-19T15:22:10.625555+09:00",
+      "keyword": "조사",
+      "notice_type": "prebid"
+    }
+  }
 }
