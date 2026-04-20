@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-21T07:03:14.465864+09:00",
+  "last_check": "2026-04-21T08:04:14.292790+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -1235,6 +1235,21 @@
       "notified_at": "2026-04-21T00:03:29.530691+09:00",
       "keyword": "유지보수",
       "notice_type": "bid"
+    },
+    "R26BK01472193-000": {
+      "notified_at": "2026-04-21T07:58:06.675772+09:00",
+      "keyword": "시설물",
+      "notice_type": "bid"
+    },
+    "R26BK01475794-000": {
+      "notified_at": "2026-04-21T07:59:10.992345+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01477796-000": {
+      "notified_at": "2026-04-21T07:59:27.479889+09:00",
+      "keyword": "교육",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -1371,6 +1386,21 @@
     "R26BD00216721": {
       "notified_at": "2026-04-21T00:05:16.977698+09:00",
       "keyword": "전기",
+      "notice_type": "prebid"
+    },
+    "R26BD00216725": {
+      "notified_at": "2026-04-21T07:58:48.614660+09:00",
+      "keyword": "영상",
+      "notice_type": "prebid"
+    },
+    "R26BD00216722": {
+      "notified_at": "2026-04-21T07:59:14.523109+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00216724": {
+      "notified_at": "2026-04-21T08:01:38.861243+09:00",
+      "keyword": "조사",
       "notice_type": "prebid"
     }
   }
