@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-21T09:03:41.575876+09:00",
+  "last_check": "2026-04-21T12:43:20.333141+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -1395,6 +1395,26 @@
       "notified_at": "2026-04-21T09:02:31.841593+09:00",
       "keyword": "의료",
       "notice_type": "bid"
+    },
+    "R26BK01475290-000": {
+      "notified_at": "2026-04-21T12:35:18.084017+09:00",
+      "keyword": "AI",
+      "notice_type": "bid"
+    },
+    "R26BK01478757-000": {
+      "notified_at": "2026-04-21T12:35:50.294178+09:00",
+      "keyword": "건축",
+      "notice_type": "bid"
+    },
+    "R26BK01475510-001": {
+      "notified_at": "2026-04-21T12:36:54.345393+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01458776-001": {
+      "notified_at": "2026-04-21T12:36:54.600777+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -1561,6 +1581,21 @@
     "R26BD00216737": {
       "notified_at": "2026-04-21T08:58:43.455490+09:00",
       "keyword": "네트워크",
+      "notice_type": "prebid"
+    },
+    "R26BD00216975": {
+      "notified_at": "2026-04-21T12:37:01.953796+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00216978": {
+      "notified_at": "2026-04-21T12:37:23.979444+09:00",
+      "keyword": "교육",
+      "notice_type": "prebid"
+    },
+    "R26BD00216977": {
+      "notified_at": "2026-04-21T12:37:30.698982+09:00",
+      "keyword": "홍보",
       "notice_type": "prebid"
     }
   }
