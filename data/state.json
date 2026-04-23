@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-24T06:35:12.481476+09:00",
+  "last_check": "2026-04-24T07:29:19.574976+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -5160,6 +5160,26 @@
       "notified_at": "2026-04-23T23:18:08.924154+09:00",
       "keyword": "용역",
       "notice_type": "bid"
+    },
+    "R26BK01486364-000": {
+      "notified_at": "2026-04-24T07:25:11.882736+09:00",
+      "keyword": "도로",
+      "notice_type": "bid"
+    },
+    "R26BK01486583-000": {
+      "notified_at": "2026-04-24T07:25:34.606248+09:00",
+      "keyword": "감리",
+      "notice_type": "bid"
+    },
+    "R26BK01485614-000": {
+      "notified_at": "2026-04-24T07:26:08.638714+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01486586-000": {
+      "notified_at": "2026-04-24T07:28:56.033405+09:00",
+      "keyword": "차량",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -5645,6 +5665,11 @@
     },
     "R26BD00218383": {
       "notified_at": "2026-04-23T12:48:45.591153+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00218851": {
+      "notified_at": "2026-04-24T07:26:11.898289+09:00",
       "keyword": "용역",
       "notice_type": "prebid"
     }
