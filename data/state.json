@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-24T09:19:59.371066+09:00",
+  "last_check": "2026-04-24T13:00:23.368929+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -5380,6 +5380,36 @@
       "notified_at": "2026-04-24T09:19:43.364590+09:00",
       "keyword": "환경",
       "notice_type": "bid"
+    },
+    "R26BK01482510-000": {
+      "notified_at": "2026-04-24T12:55:50.785476+09:00",
+      "keyword": "건축",
+      "notice_type": "bid"
+    },
+    "R26BK01487140-000": {
+      "notified_at": "2026-04-24T12:56:35.745670+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01474102-000": {
+      "notified_at": "2026-04-24T12:56:35.980925+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01487326-000": {
+      "notified_at": "2026-04-24T12:56:36.201093+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01486324-000": {
+      "notified_at": "2026-04-24T12:58:25.740406+09:00",
+      "keyword": "분석",
+      "notice_type": "bid"
+    },
+    "R26BK01487271-000": {
+      "notified_at": "2026-04-24T12:59:38.687125+09:00",
+      "keyword": "차량",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -5981,6 +6011,26 @@
     "R26BD00218896": {
       "notified_at": "2026-04-24T09:18:52.596196+09:00",
       "keyword": "의료",
+      "notice_type": "prebid"
+    },
+    "R26BD00219089": {
+      "notified_at": "2026-04-24T12:55:54.094737+09:00",
+      "keyword": "건축",
+      "notice_type": "prebid"
+    },
+    "R26BD00219088": {
+      "notified_at": "2026-04-24T12:56:38.895028+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00219091": {
+      "notified_at": "2026-04-24T12:56:39.097217+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00219092": {
+      "notified_at": "2026-04-24T12:59:56.933333+09:00",
+      "keyword": "환경",
       "notice_type": "prebid"
     }
   }
