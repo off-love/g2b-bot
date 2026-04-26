@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-27T06:55:10.407425+09:00",
+  "last_check": "2026-04-27T07:36:39.438381+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -5955,6 +5955,11 @@
       "notified_at": "2026-04-27T06:50:02.813933+09:00",
       "keyword": "AI",
       "notice_type": "bid"
+    },
+    "R26BK01473714-000": {
+      "notified_at": "2026-04-27T07:32:15.559252+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -6620,6 +6625,16 @@
     },
     "R26BD00219539": {
       "notified_at": "2026-04-25T14:33:57.124717+09:00",
+      "keyword": "분석",
+      "notice_type": "prebid"
+    },
+    "R26BD00219567": {
+      "notified_at": "2026-04-27T07:34:40.041757+09:00",
+      "keyword": "분석",
+      "notice_type": "prebid"
+    },
+    "R26BD00219568": {
+      "notified_at": "2026-04-27T07:34:40.195927+09:00",
       "keyword": "분석",
       "notice_type": "prebid"
     }
