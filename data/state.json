@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-28T07:15:33.737958+09:00",
+  "last_check": "2026-04-28T08:22:13.566397+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -7030,6 +7030,31 @@
       "notified_at": "2026-04-28T07:14:19.265549+09:00",
       "keyword": "개발",
       "notice_type": "bid"
+    },
+    "R26BK01492150-000": {
+      "notified_at": "2026-04-28T08:17:09.069277+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01487453-000": {
+      "notified_at": "2026-04-28T08:17:09.285567+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01487591-000": {
+      "notified_at": "2026-04-28T08:17:09.676902+09:00",
+      "keyword": "용역",
+      "notice_type": "bid"
+    },
+    "R26BK01489431-000": {
+      "notified_at": "2026-04-28T08:17:19.695285+09:00",
+      "keyword": "컨설팅",
+      "notice_type": "bid"
+    },
+    "R26BK01488334-000": {
+      "notified_at": "2026-04-28T08:19:34.433638+09:00",
+      "keyword": "연구",
+      "notice_type": "bid"
     }
   },
   "notified_prebids": {
@@ -7716,6 +7741,31 @@
     "R26BD00220235": {
       "notified_at": "2026-04-28T00:19:51.455315+09:00",
       "keyword": "식품",
+      "notice_type": "prebid"
+    },
+    "R26BD00220242": {
+      "notified_at": "2026-04-28T08:17:13.966568+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00220244": {
+      "notified_at": "2026-04-28T08:17:14.158584+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00220246": {
+      "notified_at": "2026-04-28T08:17:14.490219+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00220247": {
+      "notified_at": "2026-04-28T08:17:14.730373+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid"
+    },
+    "R26BD00220245": {
+      "notified_at": "2026-04-28T08:22:06.554522+09:00",
+      "keyword": "환경",
       "notice_type": "prebid"
     }
   }
