@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-29T06:05:09.505713+09:00",
+  "last_check": "2026-04-29T06:51:03.433159+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -8170,6 +8170,18 @@
       "notified_at": "2026-04-28T22:10:52.135034+09:00",
       "keyword": "용역",
       "notice_type": "bid"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01491731-000": {
+      "notified_at": "2026-04-29T06:47:57.498710+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01492147-000": {
+      "notified_at": "2026-04-29T06:47:57.762822+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
     }
   },
   "notified_prebids": {
