@@ -105,7 +105,6 @@ def _extract_items(response_data: dict[str, Any]) -> tuple[list[dict], int]:
 
     items = body.get("items", [])
 
-    # items가 dict 형태일 수 있음 (단일 결과)
     if isinstance(items, dict):
         items = [items]
 
@@ -117,19 +116,15 @@ def fetch_bid_notices(
     keyword: str = "",
     buffer_minutes: int = 30,
     max_results: int = 999,
+    inqry_bgn_dt: str | None = None,
+    inqry_end_dt: str | None = None,
 ) -> list[BidNotice]:
-    """입찰공고 목록을 조회합니다.
+    """입찰공고 목록을 조회합니다."""
+    if inqry_bgn_dt and inqry_end_dt:
+        bgn_dt, end_dt = inqry_bgn_dt, inqry_end_dt
+    else:
+        bgn_dt, end_dt = get_query_range(buffer_minutes)
 
-    Args:
-        bid_type: 입찰 유형 (용역/물품/공사/외자)
-        keyword: 공고명 키워드 (bidNtceNm 파라미터)
-        buffer_minutes: 조회 범위 (최근 N분)
-        max_results: 최대 결과 수
-
-    Returns:
-        BidNotice 리스트
-    """
-    bgn_dt, end_dt = get_query_range(buffer_minutes)
     api_key = _get_api_key()
     all_notices: list[BidNotice] = []
     page_no = 1
@@ -144,7 +139,7 @@ def fetch_bid_notices(
                 "type": "json",
                 "pageNo": str(page_no),
                 "numOfRows": str(min(max_results, 999)),
-                "inqryDiv": "1",  # 공고일시 기준
+                "inqryDiv": "1",
                 "inqryBgnDt": bgn_dt,
                 "inqryEndDt": end_dt,
             }
@@ -154,7 +149,11 @@ def fetch_bid_notices(
 
             logger.info(
                 "입찰 API 호출: %s (키워드=%s, 기간=%s~%s, page=%d)",
-                operation, keyword or "전체", bgn_dt, end_dt, page_no,
+                operation,
+                keyword or "전체",
+                bgn_dt,
+                end_dt,
+                page_no,
             )
 
             response = requests.get(url, params=params, timeout=30)
@@ -172,14 +171,16 @@ def fetch_bid_notices(
 
             logger.info(
                 "  → %d건 조회 (페이지 %d, 전체 %d건)",
-                len(items), page_no, total_count,
+                len(items),
+                page_no,
+                total_count,
             )
 
             if len(all_notices) >= total_count or len(all_notices) >= max_results:
                 break
 
             page_no += 1
-            time.sleep(0.3)  # API 부하 방지
+            time.sleep(0.3)
 
         except requests.RequestException as e:
             logger.error("입찰 API 호출 실패 (page=%d): %s", page_no, e)
@@ -190,6 +191,8 @@ def fetch_bid_notices(
 
     logger.info(
         "입찰 조회 완료: %s %s → %d건",
-        bid_type.display_name, keyword or "(전체)", len(all_notices),
+        bid_type.display_name,
+        keyword or "(전체)",
+        len(all_notices),
     )
     return all_notices

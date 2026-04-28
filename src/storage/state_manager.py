@@ -18,7 +18,6 @@ logger = logging.getLogger(__name__)
 
 DEFAULT_STATE_PATH = Path(__file__).parent.parent.parent / "data" / "state.json"
 
-# 30일보다 오래된 기록은 정리
 CLEANUP_DAYS = 30
 
 
@@ -27,11 +26,16 @@ def _ensure_file(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not path.exists():
         with open(path, "w", encoding="utf-8") as f:
-            json.dump({
-                "last_check": "",
-                "notified_bids": {},
-                "notified_prebids": {},
-            }, f, ensure_ascii=False, indent=2)
+            json.dump(
+                {
+                    "last_check": "",
+                    "notified_bids": {},
+                    "notified_prebids": {},
+                },
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
 
 
 def load_state(path: Path | None = None) -> dict:
@@ -41,7 +45,6 @@ def load_state(path: Path | None = None) -> dict:
     _ensure_file(path)
     with open(path, "r", encoding="utf-8") as f:
         state = json.load(f)
-    # 필드 기본값 보장
     if "notified_bids" not in state:
         state["notified_bids"] = {}
     if "notified_prebids" not in state:
@@ -80,9 +83,6 @@ def is_notified(
     if scoped_key in records:
         return True
 
-    # v1 state.json은 공고번호만 키로 사용했습니다.
-    # 같은 공고가 여러 키워드에 매칭될 수 있으므로, 마이그레이션 호환은
-    # 같은 키워드로 이미 보낸 경우에만 중복으로 봅니다.
     legacy_record = records.get(unique_key)
     if legacy_record and keyword:
         return legacy_record.get("keyword") == keyword
@@ -117,11 +117,7 @@ def update_last_check(state: dict) -> None:
 
 
 def cleanup_old_records(state: dict, days: int = CLEANUP_DAYS) -> int:
-    """오래된 알림 기록 정리
-
-    Returns:
-        삭제된 레코드 수
-    """
+    """오래된 알림 기록 정리"""
     cutoff = datetime.now(KST) - timedelta(days=days)
     removed = 0
 
