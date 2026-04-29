@@ -1,14 +1,14 @@
 """
 입찰톡 메인 실행 스크립트
 
-GitHub Actions에서 30분 간격으로 실행됩니다.
+GitHub Actions에서 주간 30분, 야간 2시간 간격으로 실행됩니다.
 
 실행 흐름:
 1. state.json 로드 + 오래된 기록 정리
 2. keywords.json 로드
 3. 마지막 성공 실행 시각 기준 조회 범위 계산
-4. 키워드별 × 업종별 API 호출
-5. 2단계 필터링 (제외 키워드 + 중복 체크)
+4. 업무구분별 API 호출
+5. 서버 내부에서 전체 키워드 매칭 + 제외 키워드 + 중복 체크
 6. 신규 공고 → FCM Topic 발송 (업무구분별 토픽)
 7. 성공한 공고만 state.json 업데이트
 """
@@ -26,7 +26,7 @@ from src.api.bid_client import fetch_bid_notices
 from src.api.prebid_client import fetch_prebid_notices
 from src.core.filter import filter_bid_notices, filter_prebid_notices
 from src.core.formatter import format_bid_payload, format_prebid_payload
-from src.core.models import KeywordConfig
+from src.core.models import BidNotice, BidType, KeywordConfig, PreBidNotice
 from src.core.topic_hasher import keyword_hash
 from src.fcm.sender import send_bid_notification
 from src.storage.state_manager import (
@@ -49,8 +49,10 @@ logger = logging.getLogger(__name__)
 
 KEYWORDS_PATH = Path(__file__).parent.parent / "data" / "keywords.json"
 FIREBASE_CREDENTIALS_PATH = Path(__file__).parent.parent / "firebase-credentials.json"
-QUERY_BUFFER_MINUTES = 60  # state가 없을 때 30분 cron 간격 + 30분 여유
-QUERY_OVERLAP_MINUTES = 15
+QUERY_BUFFER_MINUTES = 240  # state가 없을 때 최근 4시간만 조회
+QUERY_OVERLAP_MINUTES = 30
+DEFAULT_MAX_API_PAGES = 3
+API_PAGE_SIZE = 999
 
 
 @dataclass
@@ -110,32 +112,63 @@ def load_keywords() -> list[KeywordConfig]:
     return keywords
 
 
-def process_bid_notices(
-    kw: KeywordConfig,
+def _env_int(name: str, default: int) -> int:
+    raw_value = os.environ.get(name, "").strip()
+    if not raw_value:
+        return default
+    try:
+        return max(1, int(raw_value))
+    except ValueError:
+        logger.warning("%s 값이 정수가 아니어서 기본값 %d을 사용합니다: %s", name, default, raw_value)
+        return default
+
+
+def get_max_api_pages() -> int:
+    return _env_int("G2B_MAX_API_PAGES", DEFAULT_MAX_API_PAGES)
+
+
+def get_max_results_per_fetch() -> int:
+    return get_max_api_pages() * API_PAGE_SIZE
+
+
+def should_run_prebid() -> bool:
+    """사전규격 실행 여부를 반환합니다.
+
+    GitHub Actions에서 RUN_PREBID=0을 넣는 37분 주간 실행은 사전규격을 건너뜁니다.
+    로컬 실행과 수동 실행은 기본적으로 사전규격까지 처리합니다.
+    """
+    value = os.environ.get("RUN_PREBID", "1").strip().lower()
+    return value not in {"0", "false", "no", "off"}
+
+
+def group_keywords_by_bid_type(
+    keywords: list[KeywordConfig],
+) -> dict[BidType, list[KeywordConfig]]:
+    grouped: dict[BidType, list[KeywordConfig]] = {}
+    for keyword in keywords:
+        for bid_type in keyword.bid_type_enums:
+            grouped.setdefault(bid_type, []).append(keyword)
+    return grouped
+
+
+def _send_bid_matches(
+    notices: list[BidNotice],
+    keywords: list[KeywordConfig],
+    bid_type: BidType,
     state: dict,
-    query_begin: str,
-    query_end: str,
 ) -> ProcessResult:
-    """입찰공고 수집 + 필터링 + FCM 발송"""
+    """조회된 입찰공고를 키워드별로 매칭하고 FCM 발송합니다."""
     result = ProcessResult()
 
-    for bid_type in kw.bid_type_enums:
-        notices = fetch_bid_notices(
-            bid_type=bid_type,
-            keyword=kw.original,
-            buffer_minutes=QUERY_BUFFER_MINUTES,
-            inqry_bgn_dt=query_begin,
-            inqry_end_dt=query_end,
-        )
-
-        if not notices:
-            continue
-
+    for kw in keywords:
         filtered = filter_bid_notices(
             notices,
             keyword=kw.original,
             exclude_keywords=kw.exclude,
         )
+
+        if not filtered:
+            continue
 
         topic = kw.get_topic("bid", bid_type)
 
@@ -180,32 +213,24 @@ def process_bid_notices(
     return result
 
 
-def process_prebid_notices(
-    kw: KeywordConfig,
+def _send_prebid_matches(
+    notices: list[PreBidNotice],
+    keywords: list[KeywordConfig],
+    bid_type: BidType,
     state: dict,
-    query_begin: str,
-    query_end: str,
 ) -> ProcessResult:
-    """사전규격 수집 + 필터링 + FCM 발송"""
+    """조회된 사전규격을 키워드별로 매칭하고 FCM 발송합니다."""
     result = ProcessResult()
 
-    for bid_type in kw.bid_type_enums:
-        notices = fetch_prebid_notices(
-            bid_type=bid_type,
-            keyword=kw.original,
-            buffer_minutes=QUERY_BUFFER_MINUTES,
-            inqry_bgn_dt=query_begin,
-            inqry_end_dt=query_end,
-        )
-
-        if not notices:
-            continue
-
+    for kw in keywords:
         filtered = filter_prebid_notices(
             notices,
             keyword=kw.original,
             exclude_keywords=kw.exclude,
         )
+
+        if not filtered:
+            continue
 
         topic = kw.get_topic("pre", bid_type)
 
@@ -250,6 +275,64 @@ def process_prebid_notices(
     return result
 
 
+def process_bid_notices_for_type(
+    bid_type: BidType,
+    keywords: list[KeywordConfig],
+    state: dict,
+    query_begin: str,
+    query_end: str,
+) -> ProcessResult:
+    """업무구분별로 입찰공고를 한 번 조회한 뒤 키워드를 내부 매칭합니다."""
+    if not keywords:
+        return ProcessResult()
+
+    max_pages = get_max_api_pages()
+    notices = fetch_bid_notices(
+        bid_type=bid_type,
+        keyword="",
+        buffer_minutes=QUERY_BUFFER_MINUTES,
+        max_results=get_max_results_per_fetch(),
+        max_pages=max_pages,
+        inqry_bgn_dt=query_begin,
+        inqry_end_dt=query_end,
+    )
+    logger.info(
+        "입찰공고 %s: API 1묶음 조회 후 키워드 %d개 내부 매칭",
+        bid_type.display_name,
+        len(keywords),
+    )
+    return _send_bid_matches(notices, keywords, bid_type, state)
+
+
+def process_prebid_notices_for_type(
+    bid_type: BidType,
+    keywords: list[KeywordConfig],
+    state: dict,
+    query_begin: str,
+    query_end: str,
+) -> ProcessResult:
+    """업무구분별로 사전규격을 한 번 조회한 뒤 키워드를 내부 매칭합니다."""
+    if not keywords:
+        return ProcessResult()
+
+    max_pages = get_max_api_pages()
+    notices = fetch_prebid_notices(
+        bid_type=bid_type,
+        keyword="",
+        buffer_minutes=QUERY_BUFFER_MINUTES,
+        max_results=get_max_results_per_fetch(),
+        max_pages=max_pages,
+        inqry_bgn_dt=query_begin,
+        inqry_end_dt=query_end,
+    )
+    logger.info(
+        "사전규격 %s: API 1묶음 조회 후 키워드 %d개 내부 매칭",
+        bid_type.display_name,
+        len(keywords),
+    )
+    return _send_prebid_matches(notices, keywords, bid_type, state)
+
+
 def main() -> None:
     """메인 실행 함수"""
     logger.info("=" * 60)
@@ -275,26 +358,42 @@ def main() -> None:
         logger.warning("처리할 키워드가 없습니다. 종료합니다.")
         return
 
+    keywords_by_type = group_keywords_by_bid_type(keywords)
+    run_prebid = should_run_prebid()
+
     total_bid_sent = 0
     total_prebid_sent = 0
     had_failures = False
 
-    for i, kw in enumerate(keywords, 1):
+    for bid_type, type_keywords in keywords_by_type.items():
         logger.info(
-            "━━━ [%d/%d] 키워드: %s (업종: %s) ━━━",
-            i,
-            len(keywords),
-            kw.original,
-            ", ".join(bt.display_name for bt in kw.bid_type_enums),
+            "━━━ 업무구분: %s / 키워드 %d개 ━━━",
+            bid_type.display_name,
+            len(type_keywords),
         )
 
-        bid_result = process_bid_notices(kw, state, query_begin, query_end)
+        bid_result = process_bid_notices_for_type(
+            bid_type,
+            type_keywords,
+            state,
+            query_begin,
+            query_end,
+        )
         total_bid_sent += bid_result.sent_count
         had_failures = had_failures or bid_result.had_failures
 
-        prebid_result = process_prebid_notices(kw, state, query_begin, query_end)
-        total_prebid_sent += prebid_result.sent_count
-        had_failures = had_failures or prebid_result.had_failures
+        if run_prebid:
+            prebid_result = process_prebid_notices_for_type(
+                bid_type,
+                type_keywords,
+                state,
+                query_begin,
+                query_end,
+            )
+            total_prebid_sent += prebid_result.sent_count
+            had_failures = had_failures or prebid_result.had_failures
+        else:
+            logger.info("사전규격은 이번 실행에서 건너뜁니다. RUN_PREBID=0")
 
     if not had_failures:
         update_last_check(state)

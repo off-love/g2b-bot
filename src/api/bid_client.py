@@ -116,6 +116,7 @@ def fetch_bid_notices(
     keyword: str = "",
     buffer_minutes: int = 60,
     max_results: int = 999,
+    max_pages: int | None = None,
     inqry_bgn_dt: str | None = None,
     inqry_end_dt: str | None = None,
 ) -> list[BidNotice]:
@@ -177,6 +178,17 @@ def fetch_bid_notices(
             )
 
             if len(all_notices) >= total_count or len(all_notices) >= max_results:
+                break
+
+            if max_pages is not None and page_no >= max_pages:
+                logger.warning(
+                    "입찰 API 페이지 상한 도달: %s page=%d/%d, collected=%d, total=%d",
+                    operation,
+                    page_no,
+                    max_pages,
+                    len(all_notices),
+                    total_count,
+                )
                 break
 
             page_no += 1

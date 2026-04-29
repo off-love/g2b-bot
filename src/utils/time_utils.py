@@ -62,7 +62,7 @@ def get_query_range(buffer_minutes: int = 60) -> tuple[str, str]:
     """조회 시간 범위를 반환 (시작일시, 종료일시)
 
     Args:
-        buffer_minutes: 조회 범위 여유 시간 (기본 60분, 30분 cron 간격 대비 여유)
+        buffer_minutes: 조회 범위 여유 시간
 
     Returns:
         (시작일시, 종료일시) - API 요청 형식 (yyyyMMddHHmm)

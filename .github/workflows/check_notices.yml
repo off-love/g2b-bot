@@ -2,7 +2,11 @@ name: 입찰알리미 공고 체크
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # 30분마다 실행
+    # UTC 기준입니다. KST 08:07~21:37은 30분마다 실행하고,
+    # KST 22:07~06:07은 2시간마다 실행해 야간 호출량을 줄입니다.
+    - cron: '7 23,0-12 * * *'
+    - cron: '37 23,0-12 * * *'
+    - cron: '7 13,15,17,19,21 * * *'
   workflow_dispatch:          # 수동 실행
 
 permissions:
@@ -16,6 +20,7 @@ env:
   G2B_API_KEY: ${{ secrets.G2B_API_KEY }}
   G2B_PREBID_API_KEY: ${{ secrets.G2B_PREBID_API_KEY }}
   FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
+  G2B_MAX_API_PAGES: "3"
   TZ: Asia/Seoul
 
 jobs:
@@ -38,6 +43,14 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
+      - name: Configure run mode
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event.schedule }}" != "37 23,0-12 * * *" ]; then
+            echo "RUN_PREBID=1" >> "$GITHUB_ENV"
+          else
+            echo "RUN_PREBID=0" >> "$GITHUB_ENV"
+          fi
 
       - name: Run notice checker
         run: python -m src.main
