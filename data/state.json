@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-04-30T07:10:07.605020+09:00",
+  "last_check": "2026-04-30T07:34:15.608383+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -22132,6 +22132,30 @@
       "keyword": "철거",
       "notice_type": "bid",
       "topic": "bid_s_8a70e8900c84a96a"
+    },
+    "bid_s_1f592922614ca38c:R26BK01496918-000": {
+      "notified_at": "2026-04-30T07:34:12.918646+09:00",
+      "keyword": "정보시스템",
+      "notice_type": "bid",
+      "topic": "bid_s_1f592922614ca38c"
+    },
+    "bid_s_44b99c9a1fc2e9b2:R26BK01496918-000": {
+      "notified_at": "2026-04-30T07:34:13.154241+09:00",
+      "keyword": "통신",
+      "notice_type": "bid",
+      "topic": "bid_s_44b99c9a1fc2e9b2"
+    },
+    "bid_s_02cb09e20c94f203:R26BK01495075-000": {
+      "notified_at": "2026-04-30T07:34:13.375395+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_s_02cb09e20c94f203"
+    },
+    "bid_g_33500a787e27c740:R26BK01495676-000": {
+      "notified_at": "2026-04-30T07:34:15.607913+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
     }
   },
   "notified_prebids": {
