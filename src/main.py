@@ -37,7 +37,6 @@ from src.storage.state_manager import (
     save_state,
     update_last_check,
 )
-from src.utils.schedule import env_enabled
 from src.utils.time_utils import get_incremental_query_range
 
 logging.basicConfig(
@@ -339,10 +338,6 @@ def main() -> None:
     logger.info("=" * 60)
     logger.info("🚀 입찰톡 공고 체크 시작")
     logger.info("=" * 60)
-
-    if not env_enabled("SHOULD_RUN_NOTICE_CHECK", default=True):
-        logger.info("이번 GitHub Actions 트리거는 스케줄 정책상 건너뜁니다.")
-        return
 
     validate_runtime_config()
 

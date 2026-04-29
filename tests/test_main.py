@@ -197,21 +197,6 @@ def test_should_run_prebid_respects_env(monkeypatch):
     assert main_module.should_run_prebid() is True
 
 
-def test_main_skips_when_schedule_env_disabled(monkeypatch):
-    validate_called = False
-
-    def fake_validate_runtime_config():
-        nonlocal validate_called
-        validate_called = True
-
-    monkeypatch.setenv("SHOULD_RUN_NOTICE_CHECK", "0")
-    monkeypatch.setattr(main_module, "validate_runtime_config", fake_validate_runtime_config)
-
-    main_module.main()
-
-    assert validate_called is False
-
-
 def test_main_keeps_last_check_when_delivery_failed(monkeypatch):
     kw = _make_keyword()
     state = {
