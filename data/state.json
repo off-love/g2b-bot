@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-01T18:05:53.703849+09:00",
+  "last_check": "2026-05-01T19:09:54.161534+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35038,6 +35038,18 @@
       "keyword": "구매",
       "notice_type": "bid",
       "topic": "bid_g_33500a787e27c740"
+    },
+    "bid_s_4a827e33535875aa:R26BK01501128-000": {
+      "notified_at": "2026-05-01T19:09:51.902600+09:00",
+      "keyword": "설계",
+      "notice_type": "bid",
+      "topic": "bid_s_4a827e33535875aa"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501128-000": {
+      "notified_at": "2026-05-01T19:09:52.099025+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
     }
   },
   "notified_prebids": {
