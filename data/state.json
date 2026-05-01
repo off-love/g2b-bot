@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-01T08:29:13.033395+09:00",
+  "last_check": "2026-05-01T10:22:28.398578+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -34966,6 +34966,24 @@
       "keyword": "인쇄",
       "notice_type": "bid",
       "topic": "bid_g_3ee1ff52e0e8a051"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501007-000": {
+      "notified_at": "2026-05-01T10:22:24.280626+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501014-000": {
+      "notified_at": "2026-05-01T10:22:24.474307+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_e9e7abfc765737f0:R26BK01501007-000": {
+      "notified_at": "2026-05-01T10:22:24.642052+09:00",
+      "keyword": "조사",
+      "notice_type": "bid",
+      "topic": "bid_s_e9e7abfc765737f0"
     }
   },
   "notified_prebids": {
