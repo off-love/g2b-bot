@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-02T08:02:36.641210+09:00",
+  "last_check": "2026-05-02T12:46:58.703381+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35068,6 +35068,60 @@
       "keyword": "전산",
       "notice_type": "bid",
       "topic": "bid_g_719e04ae587b7136"
+    },
+    "bid_s_32e83e92d45d71f6:R26BK01501158-000": {
+      "notified_at": "2026-05-02T12:46:47.889481+09:00",
+      "keyword": "AI",
+      "notice_type": "bid",
+      "topic": "bid_s_32e83e92d45d71f6"
+    },
+    "bid_s_8e9cd60504b1a092:R26BK01501158-000": {
+      "notified_at": "2026-05-02T12:46:48.058946+09:00",
+      "keyword": "건축",
+      "notice_type": "bid",
+      "topic": "bid_s_8e9cd60504b1a092"
+    },
+    "bid_s_ce2e154c6fcc6b11:R26BK01501158-000": {
+      "notified_at": "2026-05-02T12:46:48.221948+09:00",
+      "keyword": "감리",
+      "notice_type": "bid",
+      "topic": "bid_s_ce2e154c6fcc6b11"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501143-000": {
+      "notified_at": "2026-05-02T12:46:48.421527+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501145-000": {
+      "notified_at": "2026-05-02T12:46:48.587493+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501158-000": {
+      "notified_at": "2026-05-02T12:46:48.787706+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_e9e7abfc765737f0:R26BK01501143-000": {
+      "notified_at": "2026-05-02T12:46:48.952609+09:00",
+      "keyword": "조사",
+      "notice_type": "bid",
+      "topic": "bid_s_e9e7abfc765737f0"
+    },
+    "bid_s_a0eadd0b05bc2eca:R26BK01501143-000": {
+      "notified_at": "2026-05-02T12:46:49.115248+09:00",
+      "keyword": "연구",
+      "notice_type": "bid",
+      "topic": "bid_s_a0eadd0b05bc2eca"
+    },
+    "bid_s_45ec3425c8b02734:R26BK01501143-000": {
+      "notified_at": "2026-05-02T12:46:49.276183+09:00",
+      "keyword": "분석",
+      "notice_type": "bid",
+      "topic": "bid_s_45ec3425c8b02734"
     }
   },
   "notified_prebids": {
