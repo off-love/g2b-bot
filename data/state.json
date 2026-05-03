@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-03T18:39:38.505298+09:00",
+  "last_check": "2026-05-03T20:03:47.231810+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35242,6 +35242,12 @@
       "keyword": "조경",
       "notice_type": "bid",
       "topic": "bid_c_4a2e2d96412c14bb"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501348-000": {
+      "notified_at": "2026-05-03T20:03:43.330693+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
     }
   },
   "notified_prebids": {
