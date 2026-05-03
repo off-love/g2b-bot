@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-04T07:22:09.720914+09:00",
+  "last_check": "2026-05-04T07:57:18.656693+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35254,6 +35254,30 @@
       "keyword": "시설물",
       "notice_type": "bid",
       "topic": "bid_c_56190b5df1537d36"
+    },
+    "bid_s_ce2e154c6fcc6b11:R26BK01494255-000": {
+      "notified_at": "2026-05-04T07:57:10.448611+09:00",
+      "keyword": "감리",
+      "notice_type": "bid",
+      "topic": "bid_s_ce2e154c6fcc6b11"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01494255-000": {
+      "notified_at": "2026-05-04T07:57:10.671483+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_c_8cd58eab1de8b2f5:R26BK01501370-000": {
+      "notified_at": "2026-05-04T07:57:13.932581+09:00",
+      "keyword": "전기",
+      "notice_type": "bid",
+      "topic": "bid_c_8cd58eab1de8b2f5"
+    },
+    "bid_g_33500a787e27c740:R26BK01501170-000": {
+      "notified_at": "2026-05-04T07:57:17.076717+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
     }
   },
   "notified_prebids": {
@@ -44800,6 +44824,30 @@
       "keyword": "용역",
       "notice_type": "prebid",
       "topic": "pre_s_2ee07ef88e18cae0"
+    },
+    "pre_s_8e9cd60504b1a092:R26BD00222463": {
+      "notified_at": "2026-05-04T07:57:11.933498+09:00",
+      "keyword": "건축",
+      "notice_type": "prebid",
+      "topic": "pre_s_8e9cd60504b1a092"
+    },
+    "pre_s_2ee07ef88e18cae0:R26BD00222462": {
+      "notified_at": "2026-05-04T07:57:12.188158+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid",
+      "topic": "pre_s_2ee07ef88e18cae0"
+    },
+    "pre_s_a0eadd0b05bc2eca:R26BD00222463": {
+      "notified_at": "2026-05-04T07:57:12.416409+09:00",
+      "keyword": "연구",
+      "notice_type": "prebid",
+      "topic": "pre_s_a0eadd0b05bc2eca"
+    },
+    "pre_g_5d36e09c3271e0e7:R26BD00222461": {
+      "notified_at": "2026-05-04T07:57:18.656474+09:00",
+      "keyword": "환경",
+      "notice_type": "prebid",
+      "topic": "pre_g_5d36e09c3271e0e7"
     }
   }
 }
