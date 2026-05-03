@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-03T15:37:34.337659+09:00",
+  "last_check": "2026-05-03T18:39:38.505298+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35236,6 +35236,12 @@
       "keyword": "개발",
       "notice_type": "bid",
       "topic": "bid_s_a5ac2b7251f6a58b"
+    },
+    "bid_c_4a2e2d96412c14bb:R26BK01501346-000": {
+      "notified_at": "2026-05-03T18:39:33.703548+09:00",
+      "keyword": "조경",
+      "notice_type": "bid",
+      "topic": "bid_c_4a2e2d96412c14bb"
     }
   },
   "notified_prebids": {
@@ -44746,6 +44752,36 @@
       "keyword": "의료",
       "notice_type": "prebid",
       "topic": "pre_g_182d2f97e9825c56"
+    },
+    "pre_s_1f592922614ca38c:R26BD00222458": {
+      "notified_at": "2026-05-03T18:39:31.738114+09:00",
+      "keyword": "정보시스템",
+      "notice_type": "prebid",
+      "topic": "pre_s_1f592922614ca38c"
+    },
+    "pre_s_ce2e154c6fcc6b11:R26BD00222457": {
+      "notified_at": "2026-05-03T18:39:31.926383+09:00",
+      "keyword": "감리",
+      "notice_type": "prebid",
+      "topic": "pre_s_ce2e154c6fcc6b11"
+    },
+    "pre_s_2ee07ef88e18cae0:R26BD00222455": {
+      "notified_at": "2026-05-03T18:39:32.079855+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid",
+      "topic": "pre_s_2ee07ef88e18cae0"
+    },
+    "pre_s_2ee07ef88e18cae0:R26BD00222457": {
+      "notified_at": "2026-05-03T18:39:32.233117+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid",
+      "topic": "pre_s_2ee07ef88e18cae0"
+    },
+    "pre_g_8e9cd60504b1a092:R26BD00222453": {
+      "notified_at": "2026-05-03T18:39:38.503511+09:00",
+      "keyword": "건축",
+      "notice_type": "prebid",
+      "topic": "pre_g_8e9cd60504b1a092"
     }
   }
 }
