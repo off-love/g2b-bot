@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-04T07:57:18.656693+09:00",
+  "last_check": "2026-05-04T08:25:34.736439+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -35275,6 +35275,60 @@
     },
     "bid_g_33500a787e27c740:R26BK01501170-000": {
       "notified_at": "2026-05-04T07:57:17.076717+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "bid_s_4a827e33535875aa:R26BK01501371-000": {
+      "notified_at": "2026-05-04T08:25:29.237759+09:00",
+      "keyword": "설계",
+      "notice_type": "bid",
+      "topic": "bid_s_4a827e33535875aa"
+    },
+    "bid_s_4a827e33535875aa:R26BK01501374-000": {
+      "notified_at": "2026-05-04T08:25:29.429537+09:00",
+      "keyword": "설계",
+      "notice_type": "bid",
+      "topic": "bid_s_4a827e33535875aa"
+    },
+    "bid_s_ce2e154c6fcc6b11:R26BK01501379-000": {
+      "notified_at": "2026-05-04T08:25:29.621994+09:00",
+      "keyword": "감리",
+      "notice_type": "bid",
+      "topic": "bid_s_ce2e154c6fcc6b11"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501371-000": {
+      "notified_at": "2026-05-04T08:25:29.878111+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501374-000": {
+      "notified_at": "2026-05-04T08:25:30.039983+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01501379-000": {
+      "notified_at": "2026-05-04T08:25:30.239885+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01493111-000": {
+      "notified_at": "2026-05-04T08:25:30.443581+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_c_4fc2f5cddb8f437c:R26BK01472521-000": {
+      "notified_at": "2026-05-04T08:25:32.586585+09:00",
+      "keyword": "방수",
+      "notice_type": "bid",
+      "topic": "bid_c_4fc2f5cddb8f437c"
+    },
+    "bid_g_33500a787e27c740:R26BK01499748-000": {
+      "notified_at": "2026-05-04T08:25:34.736081+09:00",
       "keyword": "구매",
       "notice_type": "bid",
       "topic": "bid_g_33500a787e27c740"
