@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-05T10:12:52.187910+09:00",
+  "last_check": "2026-05-05T12:47:01.964256+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -43360,6 +43360,30 @@
       "keyword": "도로",
       "notice_type": "bid",
       "topic": "bid_c_60982a61e50d3bea"
+    },
+    "bid_s_4a827e33535875aa:R26BK01503438-000": {
+      "notified_at": "2026-05-05T12:46:56.323329+09:00",
+      "keyword": "설계",
+      "notice_type": "bid",
+      "topic": "bid_s_4a827e33535875aa"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01503438-000": {
+      "notified_at": "2026-05-05T12:46:56.544724+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_c_8e9cd60504b1a092:R26BK01503448-000": {
+      "notified_at": "2026-05-05T12:46:59.227075+09:00",
+      "keyword": "건축",
+      "notice_type": "bid",
+      "topic": "bid_c_8e9cd60504b1a092"
+    },
+    "bid_c_23500ebf6fdd8df1:R26BK01503448-000": {
+      "notified_at": "2026-05-05T12:46:59.392917+09:00",
+      "keyword": "소방",
+      "notice_type": "bid",
+      "topic": "bid_c_23500ebf6fdd8df1"
     }
   },
   "notified_prebids": {
