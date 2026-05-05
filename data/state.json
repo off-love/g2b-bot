@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-05T08:30:11.677458+09:00",
+  "last_check": "2026-05-05T09:04:22.747746+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -43354,6 +43354,12 @@
       "keyword": "용역",
       "notice_type": "bid",
       "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_c_60982a61e50d3bea:R26BK01503429-000": {
+      "notified_at": "2026-05-05T09:04:14.964825+09:00",
+      "keyword": "도로",
+      "notice_type": "bid",
+      "topic": "bid_c_60982a61e50d3bea"
     }
   },
   "notified_prebids": {
