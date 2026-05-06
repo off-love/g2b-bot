@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-07T01:51:55.060285+09:00",
+  "last_check": "2026-05-07T02:06:15.519759+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -58804,6 +58804,18 @@
       "keyword": "전기",
       "notice_type": "bid",
       "topic": "bid_c_8cd58eab1de8b2f5"
+    },
+    "bid_c_a0dd6366c7a962c1:R26BK01507073-000": {
+      "notified_at": "2026-05-07T02:06:14.100498+09:00",
+      "keyword": "신축",
+      "notice_type": "bid",
+      "topic": "bid_c_a0dd6366c7a962c1"
+    },
+    "bid_c_44b99c9a1fc2e9b2:R26BK01507073-000": {
+      "notified_at": "2026-05-07T02:06:14.335570+09:00",
+      "keyword": "통신",
+      "notice_type": "bid",
+      "topic": "bid_c_44b99c9a1fc2e9b2"
     }
   },
   "notified_prebids": {
