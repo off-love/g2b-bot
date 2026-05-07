@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-08T06:32:32.162214+09:00",
+  "last_check": "2026-05-08T07:13:03.471840+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -71284,6 +71284,24 @@
       "keyword": "전기",
       "notice_type": "bid",
       "topic": "bid_c_8cd58eab1de8b2f5"
+    },
+    "bid_c_8a70e8900c84a96a:R26BK01508005-000": {
+      "notified_at": "2026-05-08T07:12:58.723244+09:00",
+      "keyword": "철거",
+      "notice_type": "bid",
+      "topic": "bid_c_8a70e8900c84a96a"
+    },
+    "bid_c_182d2f97e9825c56:R26BK01508005-000": {
+      "notified_at": "2026-05-08T07:12:58.945970+09:00",
+      "keyword": "의료",
+      "notice_type": "bid",
+      "topic": "bid_c_182d2f97e9825c56"
+    },
+    "bid_g_a5ac2b7251f6a58b:R26BK01510018-000": {
+      "notified_at": "2026-05-08T07:13:02.626717+09:00",
+      "keyword": "개발",
+      "notice_type": "bid",
+      "topic": "bid_g_a5ac2b7251f6a58b"
     }
   },
   "notified_prebids": {
