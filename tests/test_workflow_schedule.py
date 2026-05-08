@@ -29,3 +29,10 @@ def test_notice_check_schedule_is_weekday_30m_weekend_2h():
         "7 0,2,4,6,8,10,12,14,16,18,20,22 * * 6",
         "7 0,2,4,6,8,10,12,14 * * 0",
     ]
+
+
+def test_notice_check_enables_android_data_only_push():
+    with open(WORKFLOW_PATH, encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+
+    assert data["env"]["ENABLE_ANDROID_PUSH"] == "1"

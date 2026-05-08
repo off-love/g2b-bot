@@ -136,3 +136,40 @@ def send_bid_notification(topic: str, payload: dict) -> bool:
         time.sleep(0.1)  # FCM 팬아웃 간격 (1,000 concurrent 제한 대비)
 
     return success
+
+
+def send_android_data_notification(topic: str, payload: dict) -> bool:
+    """Android 앱용 data-only FCM 알림을 발송합니다.
+
+    Android 앱은 data-only 메시지를 직접 받아 로컬 히스토리에 저장한 뒤
+    NotificationCompat 알림을 표시합니다. 기존 iOS notification/APNs 경로와
+    분리하기 위해 별도 함수로 유지합니다.
+    """
+    _init_firebase()
+
+    try:
+        from firebase_admin import messaging
+
+        notification = payload.get("notification", {})
+        data = {
+            key: "" if value is None else str(value)
+            for key, value in payload.get("data", {}).items()
+        }
+        data["platform"] = "android"
+        data["notificationTitle"] = str(notification.get("title", ""))
+        data["notificationBody"] = str(notification.get("body", ""))
+
+        message = messaging.Message(
+            topic=topic,
+            data=data,
+            android=messaging.AndroidConfig(priority="high"),
+        )
+
+        response = messaging.send(message)
+        logger.info("Android FCM data-only 발송 성공: topic=%s, response=%s", topic, response)
+        time.sleep(0.1)
+        return True
+
+    except Exception as e:
+        logger.error("Android FCM data-only 발송 실패: topic=%s, error=%s", topic, e)
+        return False

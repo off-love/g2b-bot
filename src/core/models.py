@@ -145,6 +145,13 @@ class KeywordConfig:
     def get_topic(self, noti_type: str, bid_type: BidType) -> str:
         return f"{noti_type}_{bid_type.topic_category}_{self.keyword_hash}"
 
+    def get_android_topic(self, noti_type: str, bid_type: BidType) -> str:
+        """Android 전용 data-only FCM topic.
+
+        기존 iOS topic과 분리하기 위해 `and_` prefix를 붙입니다.
+        """
+        return f"and_{noti_type}_{bid_type.topic_category}_{self.keyword_hash}"
+
 
 @dataclass
 class NotifiedRecord:

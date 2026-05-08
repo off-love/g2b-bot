@@ -28,6 +28,7 @@ env:
   G2B_PREBID_API_KEY: ${{ secrets.G2B_PREBID_API_KEY }}
   FIREBASE_CREDENTIALS: ${{ secrets.FIREBASE_CREDENTIALS }}
   G2B_MAX_API_PAGES: "3"
+  ENABLE_ANDROID_PUSH: "1"
   TZ: Asia/Seoul
 
 jobs:

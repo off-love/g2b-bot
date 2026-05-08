@@ -28,7 +28,7 @@ from src.core.filter import filter_bid_notices, filter_prebid_notices
 from src.core.formatter import format_bid_payload, format_prebid_payload
 from src.core.models import BidNotice, BidType, KeywordConfig, PreBidNotice
 from src.core.topic_hasher import keyword_hash
-from src.fcm.sender import send_bid_notification
+from src.fcm.sender import send_android_data_notification, send_bid_notification
 from src.storage.state_manager import (
     cleanup_old_records,
     is_notified,
@@ -141,6 +141,56 @@ def should_run_prebid() -> bool:
     return value not in {"0", "false", "no", "off"}
 
 
+def should_send_android_push() -> bool:
+    """Android 전용 data-only push 발송 여부.
+
+    기본값은 꺼짐입니다. 기존 iOS topic/APNs 발송 경로에 영향을 주지 않기 위해
+    운영에서 `ENABLE_ANDROID_PUSH=1`을 명시한 경우에만 추가 발송합니다.
+    """
+    value = os.environ.get("ENABLE_ANDROID_PUSH", "0").strip().lower()
+    return value in {"1", "true", "yes", "on"}
+
+
+def _send_android_copy(
+    *,
+    keyword: KeywordConfig,
+    bid_type: BidType,
+    notice_type: str,
+    unique_key: str,
+    payload: dict,
+    state: dict,
+) -> None:
+    if not should_send_android_push():
+        return
+
+    noti_type = "bid" if notice_type == "bid" else "pre"
+    topic = keyword.get_android_topic(noti_type, bid_type)
+    if is_notified(
+        state,
+        unique_key,
+        notice_type,
+        topic=topic,
+        keyword=keyword.original,
+    ):
+        return
+
+    if send_android_data_notification(topic, payload):
+        mark_notified(
+            state,
+            unique_key,
+            keyword.original,
+            notice_type,
+            topic=topic,
+        )
+    else:
+        logger.warning(
+            "Android data-only 알림 실패(기존 iOS 발송 상태에는 영향 없음): [%s/%s] %s",
+            keyword.original,
+            bid_type.display_name,
+            unique_key,
+        )
+
+
 def group_keywords_by_bid_type(
     keywords: list[KeywordConfig],
 ) -> dict[BidType, list[KeywordConfig]]:
@@ -200,6 +250,14 @@ def _send_bid_matches(
                     bid_type.display_name,
                     notice.bid_ntce_nm,
                     topic,
+                )
+                _send_android_copy(
+                    keyword=kw,
+                    bid_type=bid_type,
+                    notice_type="bid",
+                    unique_key=notice.unique_key,
+                    payload=payload,
+                    state=state,
                 )
             else:
                 result.had_failures = True
@@ -262,6 +320,14 @@ def _send_prebid_matches(
                     bid_type.display_name,
                     notice.prcure_nm,
                     topic,
+                )
+                _send_android_copy(
+                    keyword=kw,
+                    bid_type=bid_type,
+                    notice_type="prebid",
+                    unique_key=notice.unique_key,
+                    payload=payload,
+                    state=state,
                 )
             else:
                 result.had_failures = True

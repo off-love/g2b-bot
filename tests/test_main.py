@@ -197,6 +197,124 @@ def test_should_run_prebid_respects_env(monkeypatch):
     assert main_module.should_run_prebid() is True
 
 
+def test_should_send_android_push_defaults_off(monkeypatch):
+    monkeypatch.delenv("ENABLE_ANDROID_PUSH", raising=False)
+    assert main_module.should_send_android_push() is False
+
+    monkeypatch.setenv("ENABLE_ANDROID_PUSH", "1")
+    assert main_module.should_send_android_push() is True
+
+
+def test_keyword_config_android_topic_is_separate():
+    kw = _make_keyword()
+
+    assert kw.get_topic("bid", BidType.SERVICE) == "bid_s_abc123def4567890"
+    assert kw.get_android_topic("bid", BidType.SERVICE) == "and_bid_s_abc123def4567890"
+
+
+def test_process_bid_sends_android_copy_when_enabled(monkeypatch):
+    kw = _make_keyword()
+    notice = _make_bid_notice()
+    state = {"notified_bids": {}, "notified_prebids": {}}
+    android_calls = []
+
+    monkeypatch.setenv("ENABLE_ANDROID_PUSH", "1")
+    monkeypatch.setattr(main_module, "fetch_bid_notices", lambda **kwargs: [notice])
+    monkeypatch.setattr(
+        main_module,
+        "filter_bid_notices",
+        lambda notices, keyword, exclude_keywords: list(notices),
+    )
+    monkeypatch.setattr(
+        main_module,
+        "format_bid_payload",
+        lambda notice, keyword: {
+            "notification": {"title": "새 입찰공고", "body": notice.bid_ntce_nm},
+            "data": {"noticeId": notice.unique_key},
+        },
+    )
+    monkeypatch.setattr(main_module, "send_bid_notification", lambda topic, payload: True)
+    monkeypatch.setattr(
+        main_module,
+        "send_android_data_notification",
+        lambda topic, payload: android_calls.append((topic, payload)) or True,
+    )
+
+    result = main_module.process_bid_notices_for_type(
+        BidType.SERVICE,
+        [kw],
+        state,
+        "202604201100",
+        "202604201200",
+    )
+
+    android_topic = kw.get_android_topic("bid", BidType.SERVICE)
+    assert result.sent_count == 1
+    assert result.had_failures is False
+    assert android_calls == [
+        (
+            android_topic,
+            {
+                "notification": {"title": "새 입찰공고", "body": notice.bid_ntce_nm},
+                "data": {"noticeId": notice.unique_key},
+            },
+        )
+    ]
+    assert is_notified(
+        state,
+        notice.unique_key,
+        "bid",
+        topic=android_topic,
+        keyword=kw.original,
+    ) is True
+
+
+def test_android_copy_failure_does_not_fail_ios_delivery(monkeypatch):
+    kw = _make_keyword()
+    notice = _make_bid_notice()
+    state = {"notified_bids": {}, "notified_prebids": {}}
+
+    monkeypatch.setenv("ENABLE_ANDROID_PUSH", "1")
+    monkeypatch.setattr(main_module, "fetch_bid_notices", lambda **kwargs: [notice])
+    monkeypatch.setattr(
+        main_module,
+        "filter_bid_notices",
+        lambda notices, keyword, exclude_keywords: list(notices),
+    )
+    monkeypatch.setattr(
+        main_module,
+        "format_bid_payload",
+        lambda notice, keyword: {"notification": {}, "data": {"noticeId": notice.unique_key}},
+    )
+    monkeypatch.setattr(main_module, "send_bid_notification", lambda topic, payload: True)
+    monkeypatch.setattr(main_module, "send_android_data_notification", lambda topic, payload: False)
+
+    result = main_module.process_bid_notices_for_type(
+        BidType.SERVICE,
+        [kw],
+        state,
+        "202604201100",
+        "202604201200",
+    )
+
+    assert result.sent_count == 1
+    assert result.had_failures is False
+    assert is_notified(
+        state,
+        notice.unique_key,
+        "bid",
+        topic=kw.get_topic("bid", BidType.SERVICE),
+        keyword=kw.original,
+    ) is True
+    assert is_notified(
+        state,
+        notice.unique_key,
+        "bid",
+        topic=kw.get_android_topic("bid", BidType.SERVICE),
+        keyword=kw.original,
+    ) is False
+
+
 def test_main_keeps_last_check_when_delivery_failed(monkeypatch):
     kw = _make_keyword()
     state = {

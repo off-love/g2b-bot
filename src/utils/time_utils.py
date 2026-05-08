@@ -134,6 +134,23 @@ def format_display_dt(dt_str: str) -> str:
     return dt.strftime("%Y-%m-%d %H:%M")
 
 
+def format_iso_dt(dt_str: str) -> str:
+    """API 응답 날짜를 KST ISO-8601 문자열로 변환합니다.
+
+    날짜 파싱에 실패하면 빈 문자열을 반환해 클라이언트가 임의 날짜로
+    대체하지 않고 "날짜 확인 필요" 상태로 처리할 수 있게 합니다.
+    """
+    dt = parse_api_dt(dt_str)
+    if not dt:
+        return ""
+    return dt.isoformat()
+
+
 def now_iso() -> str:
     """현재 KST 시각의 ISO 형식 문자열"""
     return now_kst().isoformat()
+
+
+def now_timestamp() -> str:
+    """현재 시각의 Unix timestamp 문자열"""
+    return f"{now_kst().timestamp():.6f}"
