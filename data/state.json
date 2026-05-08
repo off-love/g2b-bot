@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-08T20:25:11.960769+09:00",
+  "last_check": "2026-05-08T20:56:35.711222+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -82582,6 +82582,30 @@
       "keyword": "환경",
       "notice_type": "bid",
       "topic": "bid_c_5d36e09c3271e0e7"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01512519-000": {
+      "notified_at": "2026-05-08T20:56:32.140796+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512510-000": {
+      "notified_at": "2026-05-08T20:56:35.278893+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512515-000": {
+      "notified_at": "2026-05-08T20:56:35.508237+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512517-000": {
+      "notified_at": "2026-05-08T20:56:35.710842+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
     }
   },
   "notified_prebids": {
