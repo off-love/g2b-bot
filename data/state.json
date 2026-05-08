@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-08T18:48:56.533595+09:00",
+  "last_check": "2026-05-08T19:07:24.796311+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -82438,6 +82438,66 @@
       "keyword": "구매",
       "notice_type": "bid",
       "topic": "bid_g_33500a787e27c740"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01512480-000": {
+      "notified_at": "2026-05-08T19:07:19.633526+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "bid_s_45ec3425c8b02734:R26BK01512480-000": {
+      "notified_at": "2026-05-08T19:07:19.843897+09:00",
+      "keyword": "분석",
+      "notice_type": "bid",
+      "topic": "bid_s_45ec3425c8b02734"
+    },
+    "bid_s_da7e61c67cc5a90f:R26BK01512480-000": {
+      "notified_at": "2026-05-08T19:07:20.007108+09:00",
+      "keyword": "이전",
+      "notice_type": "bid",
+      "topic": "bid_s_da7e61c67cc5a90f"
+    },
+    "bid_c_8cd58eab1de8b2f5:R26BK01512460-000": {
+      "notified_at": "2026-05-08T19:07:22.158863+09:00",
+      "keyword": "전기",
+      "notice_type": "bid",
+      "topic": "bid_c_8cd58eab1de8b2f5"
+    },
+    "bid_c_23500ebf6fdd8df1:R26BK01512468-000": {
+      "notified_at": "2026-05-08T19:07:22.365655+09:00",
+      "keyword": "소방",
+      "notice_type": "bid",
+      "topic": "bid_c_23500ebf6fdd8df1"
+    },
+    "bid_c_23500ebf6fdd8df1:R26BK01512468-001": {
+      "notified_at": "2026-05-08T19:07:22.632422+09:00",
+      "keyword": "소방",
+      "notice_type": "bid",
+      "topic": "bid_c_23500ebf6fdd8df1"
+    },
+    "bid_c_23500ebf6fdd8df1:R26BK01512479-000": {
+      "notified_at": "2026-05-08T19:07:22.807671+09:00",
+      "keyword": "소방",
+      "notice_type": "bid",
+      "topic": "bid_c_23500ebf6fdd8df1"
+    },
+    "bid_c_02cb09e20c94f203:R26BK01512468-000": {
+      "notified_at": "2026-05-08T19:07:23.080425+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_c_02cb09e20c94f203"
+    },
+    "bid_c_02cb09e20c94f203:R26BK01512468-001": {
+      "notified_at": "2026-05-08T19:07:23.251412+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_c_02cb09e20c94f203"
+    },
+    "bid_c_02cb09e20c94f203:R26BK01512479-000": {
+      "notified_at": "2026-05-08T19:07:23.437350+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_c_02cb09e20c94f203"
     }
   },
   "notified_prebids": {
