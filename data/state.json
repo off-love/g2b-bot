@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-10T05:58:40.565231+09:00",
+  "last_check": "2026-05-10T08:00:34.517129+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -83026,6 +83026,18 @@
       "keyword": "차량",
       "notice_type": "bid",
       "topic": "and_bid_g_02cb09e20c94f203"
+    },
+    "bid_s_2ee07ef88e18cae0:R26BK01494378-001": {
+      "notified_at": "2026-05-10T08:00:17.035429+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "bid_s_2ee07ef88e18cae0"
+    },
+    "and_bid_s_2ee07ef88e18cae0:R26BK01494378-001": {
+      "notified_at": "2026-05-10T08:00:17.242738+09:00",
+      "keyword": "용역",
+      "notice_type": "bid",
+      "topic": "and_bid_s_2ee07ef88e18cae0"
     }
   },
   "notified_prebids": {
@@ -106474,6 +106486,30 @@
       "keyword": "구매",
       "notice_type": "prebid",
       "topic": "and_pre_g_33500a787e27c740"
+    },
+    "pre_s_1f592922614ca38c:R26BD00225052": {
+      "notified_at": "2026-05-10T08:00:22.474661+09:00",
+      "keyword": "정보시스템",
+      "notice_type": "prebid",
+      "topic": "pre_s_1f592922614ca38c"
+    },
+    "and_pre_s_1f592922614ca38c:R26BD00225052": {
+      "notified_at": "2026-05-10T08:00:22.705040+09:00",
+      "keyword": "정보시스템",
+      "notice_type": "prebid",
+      "topic": "and_pre_s_1f592922614ca38c"
+    },
+    "pre_s_2ee07ef88e18cae0:R26BD00225052": {
+      "notified_at": "2026-05-10T08:00:22.908779+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid",
+      "topic": "pre_s_2ee07ef88e18cae0"
+    },
+    "and_pre_s_2ee07ef88e18cae0:R26BD00225052": {
+      "notified_at": "2026-05-10T08:00:23.111806+09:00",
+      "keyword": "용역",
+      "notice_type": "prebid",
+      "topic": "and_pre_s_2ee07ef88e18cae0"
     }
   }
 }
