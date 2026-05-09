@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-10T00:07:32.453946+09:00",
+  "last_check": "2026-05-10T02:08:30.309203+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -82918,6 +82918,114 @@
       "keyword": "구매",
       "notice_type": "bid",
       "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_33500a787e27c740:R26BK01510387-001": {
+      "notified_at": "2026-05-10T02:08:24.718157+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "and_bid_g_33500a787e27c740:R26BK01510387-001": {
+      "notified_at": "2026-05-10T02:08:24.890971+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_33500a787e27c740:R26BK01512677-000": {
+      "notified_at": "2026-05-10T02:08:25.156548+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "and_bid_g_33500a787e27c740:R26BK01512677-000": {
+      "notified_at": "2026-05-10T02:08:25.350910+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_33500a787e27c740:R26BK01512677-001": {
+      "notified_at": "2026-05-10T02:08:25.599025+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "and_bid_g_33500a787e27c740:R26BK01512677-001": {
+      "notified_at": "2026-05-10T02:08:25.858236+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_33500a787e27c740:R26BK01512678-000": {
+      "notified_at": "2026-05-10T02:08:26.102507+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "and_bid_g_33500a787e27c740:R26BK01512678-000": {
+      "notified_at": "2026-05-10T02:08:26.289241+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_33500a787e27c740:R26BK01512678-001": {
+      "notified_at": "2026-05-10T02:08:26.528341+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "bid_g_33500a787e27c740"
+    },
+    "and_bid_g_33500a787e27c740:R26BK01512678-001": {
+      "notified_at": "2026-05-10T02:08:26.712408+09:00",
+      "keyword": "구매",
+      "notice_type": "bid",
+      "topic": "and_bid_g_33500a787e27c740"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01510387-001": {
+      "notified_at": "2026-05-10T02:08:27.003636+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "and_bid_g_02cb09e20c94f203:R26BK01510387-001": {
+      "notified_at": "2026-05-10T02:08:27.184159+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "and_bid_g_02cb09e20c94f203"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512677-000": {
+      "notified_at": "2026-05-10T02:08:27.479974+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "and_bid_g_02cb09e20c94f203:R26BK01512677-000": {
+      "notified_at": "2026-05-10T02:08:27.674707+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "and_bid_g_02cb09e20c94f203"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512677-001": {
+      "notified_at": "2026-05-10T02:08:27.840480+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "and_bid_g_02cb09e20c94f203:R26BK01512677-001": {
+      "notified_at": "2026-05-10T02:08:28.017779+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "and_bid_g_02cb09e20c94f203"
+    },
+    "bid_g_02cb09e20c94f203:R26BK01512678-001": {
+      "notified_at": "2026-05-10T02:08:28.345932+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "bid_g_02cb09e20c94f203"
+    },
+    "and_bid_g_02cb09e20c94f203:R26BK01512678-001": {
+      "notified_at": "2026-05-10T02:08:28.589244+09:00",
+      "keyword": "차량",
+      "notice_type": "bid",
+      "topic": "and_bid_g_02cb09e20c94f203"
     }
   },
   "notified_prebids": {
