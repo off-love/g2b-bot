@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-10T20:09:42.514466+09:00",
+  "last_check": "2026-05-10T22:51:00.295731+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -107110,6 +107110,18 @@
       "keyword": "연구",
       "notice_type": "prebid",
       "topic": "and_pre_s_a0eadd0b05bc2eca"
+    },
+    "pre_g_33500a787e27c740:R26BD00225077": {
+      "notified_at": "2026-05-10T22:51:00.063343+09:00",
+      "keyword": "구매",
+      "notice_type": "prebid",
+      "topic": "pre_g_33500a787e27c740"
+    },
+    "and_pre_g_33500a787e27c740:R26BD00225077": {
+      "notified_at": "2026-05-10T22:51:00.295426+09:00",
+      "keyword": "구매",
+      "notice_type": "prebid",
+      "topic": "and_pre_g_33500a787e27c740"
     }
   }
 }
