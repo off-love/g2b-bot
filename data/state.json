@@ -1,5 +1,5 @@
 {
-  "last_check": "2026-05-11T06:30:12.151404+09:00",
+  "last_check": "2026-05-11T06:58:04.343583+09:00",
   "notified_bids": {
     "R26BK01472635-000": {
       "notified_at": "2026-04-19T16:42:19.465911+09:00",
@@ -83290,6 +83290,18 @@
       "keyword": "환경",
       "notice_type": "bid",
       "topic": "and_bid_c_5d36e09c3271e0e7"
+    },
+    "bid_s_a0eadd0b05bc2eca:R26BK01512875-000": {
+      "notified_at": "2026-05-11T06:57:59.696640+09:00",
+      "keyword": "연구",
+      "notice_type": "bid",
+      "topic": "bid_s_a0eadd0b05bc2eca"
+    },
+    "and_bid_s_a0eadd0b05bc2eca:R26BK01512875-000": {
+      "notified_at": "2026-05-11T06:57:59.988733+09:00",
+      "keyword": "연구",
+      "notice_type": "bid",
+      "topic": "and_bid_s_a0eadd0b05bc2eca"
     }
   },
   "notified_prebids": {
