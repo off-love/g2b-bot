@@ -84,6 +84,10 @@ def send_topic_message(
 
         # APNs 페이로드 (iOS)
         apns_config = messaging.APNSConfig(
+            headers={
+                "apns-push-type": "alert",
+                "apns-priority": "10",
+            },
             payload=messaging.APNSPayload(
                 aps=messaging.Aps(
                     sound="default",
